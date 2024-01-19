@@ -9,7 +9,7 @@ import picocli.CommandLine.Command;
 /**
  * 命令执行器
  */
-@Command(name = "point", mixinStandardHelpOptions = true)
+@Command(name = "point", version = "nkw-demo 1.0", mixinStandardHelpOptions = true)
 public class CommandExecutor implements Runnable {
 
     private final CommandLine commandLine;

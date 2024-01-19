@@ -24,6 +24,7 @@ public class Main {
         args = new String[]{"list"};
         args = new String[]{"generate", "-l", "-a", "-pl"};
         args = new String[]{"--help"};
+        args = new String[]{"--version"};
 
         CommandExecutor commandExecutor = new CommandExecutor();
         commandExecutor.doExecute(args);
