@@ -14,7 +14,7 @@ public class Utils {
      * 复制文件
      */
     public static void copyStaticFiles(String from, String to) {
-        FileUtil.copy(from, to, false);
+        FileUtil.copy(from, to, true);
     }
 
     /**
