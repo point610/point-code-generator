@@ -11,6 +11,14 @@
   - 使用FreeMarker对挖空的部分进行填充
   - 注意在生成文件时，目录的空处理
 
+### 代码片段
+
+> File file = new File(FileSystems.getDefault().getPath(to).getParent().toString());
+
+> file.mkdirs();
+
+> FileUtil.copy(from, to, false);
+
 
 ### bug
 报错找不到文件：
