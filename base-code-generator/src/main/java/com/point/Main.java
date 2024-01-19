@@ -13,6 +13,7 @@ public class Main {
 //        moveStaticFile();
 //        moveStaticDir();
 //        generatorNKW();
+
         CommandTest(args);
     }
 
@@ -20,10 +21,10 @@ public class Main {
      * 使用命令行生成代码
      */
     private static void CommandTest(String[] args) {
-        args = new String[]{"config"};
-        args = new String[]{"list"};
-        args = new String[]{"generate", "-l", "-a", "-pl"};
-        args = new String[]{"--help"};
+        //args = new String[]{"config"};
+        //args = new String[]{"list"};
+        //args = new String[]{"generate", "-l", "-a", "-pl"};
+        //args = new String[]{"--help"};
         args = new String[]{"--version"};
 
         CommandExecutor commandExecutor = new CommandExecutor();

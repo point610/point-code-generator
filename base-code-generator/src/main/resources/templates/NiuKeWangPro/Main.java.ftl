@@ -22,7 +22,7 @@ public class Main {
 <#if printList>
     private static void printList(int[] list) {
         for (int i : list) {
-            System.out.printf(i + ' ');
+            System.out.printf(String.valueOf(i + ' '));
         }
     }
 </#if>
