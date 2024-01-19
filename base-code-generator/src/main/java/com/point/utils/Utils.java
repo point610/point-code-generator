@@ -2,9 +2,14 @@ package com.point.utils;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ArrayUtil;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -43,6 +48,7 @@ public class Utils {
             if (!destOutputFile.exists()) {
                 destOutputFile.mkdirs();
             }
+
             // 获取目录下的所有文件和子目录
             File[] files = from.listFiles();
             // 无子文件，直接结束
@@ -58,5 +64,30 @@ public class Utils {
             Path destPath = to.toPath().resolve(from.getName());
             Files.copy(from.toPath(), destPath, StandardCopyOption.REPLACE_EXISTING);
         }
+    }
+
+    public static void doGenerate(String form, String to, Object model) throws IOException, TemplateException {
+        System.out.println(form);
+        System.out.println(to);
+        // new 出 Configuration 对象，参数为 FreeMarker 版本号
+        Configuration configuration = new Configuration(Configuration.VERSION_2_3_32);
+
+        // 指定模板文件所在的路径
+        File templateDir = new File(form).getParentFile();
+        configuration.setDirectoryForTemplateLoading(templateDir);
+
+        // 设置模板文件使用的字符集
+        configuration.setDefaultEncoding("utf-8");
+
+        // 创建模板对象，加载指定模板
+        String templateName = new File(form).getName();
+        Template template = configuration.getTemplate(templateName);
+
+        // 生成
+        Writer out = new FileWriter(to);
+        template.process(model, out);
+
+        // 生成文件后别忘了关闭哦
+        out.close();
     }
 }
