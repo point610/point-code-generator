@@ -9,8 +9,8 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws TemplateException, IOException {
-//        moveStaticFile();
-//        moveStaticDir();
+        moveStaticFile();
+        moveStaticDir();
         generatorNKW();
     }
 
@@ -29,7 +29,7 @@ public class Main {
     }
 
     private static void moveStaticFile() {
-        String from = System.getProperty("user.dir") + File.separator + "src/main/resources/templates/NiuKeWang/Main.java.ftl";
+        String from = System.getProperty("user.dir") + File.separator + "src/main/resources/templates/NiuKeWang/Main.java";
         String to = System.getProperty("user.dir") + File.separator + ".temp";
         System.out.println(from);
         System.out.println(to);

@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -19,7 +20,11 @@ public class Utils {
      * 复制文件
      */
     public static void copyStaticFiles(String from, String to) {
-        FileUtil.copy(from, to, true);
+        File file = new File(to);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        FileUtil.copy(from, to, false);
     }
 
     /**
@@ -82,6 +87,12 @@ public class Utils {
         // 创建模板对象，加载指定模板
         String templateName = new File(form).getName();
         Template template = configuration.getTemplate(templateName);
+
+        // 判断是否存在目录
+        File file = new File(FileSystems.getDefault().getPath(to).getParent().toString());
+        if (!file.exists()) {
+            file.mkdirs();
+        }
 
         // 生成
         Writer out = new FileWriter(to);
