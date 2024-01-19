@@ -1,3 +1,4 @@
+package com.point;
 
 import java.util.Scanner;
 

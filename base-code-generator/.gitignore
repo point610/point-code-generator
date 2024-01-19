@@ -1,5 +1,6 @@
 ### MY Ignore ###
 ./.temp/
+.temp
 
 target/
 !.mvn/wrapper/maven-wrapper.jar

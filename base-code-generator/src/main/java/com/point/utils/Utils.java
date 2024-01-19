@@ -24,7 +24,7 @@ public class Utils {
         if (!file.exists()) {
             file.mkdirs();
         }
-        FileUtil.copy(from, to, false);
+        FileUtil.copy(from, to, true);
     }
 
     /**
@@ -100,5 +100,38 @@ public class Utils {
 
         // 生成文件后别忘了关闭哦
         out.close();
+    }
+
+    /**
+     * 输出目录的树形结构
+     */
+    public static void genDirTree(String path, int level, String dir) {
+        level++;
+        File file = new File(path);
+        File[] files = file.listFiles();
+        if (!file.exists()) {
+            System.out.println("文件不存在");
+            return;
+        }
+        if (files.length != 0) {
+            for (File f : files) {
+                if (f.isDirectory()) {
+                    dir = f.getName();
+                    System.out.println(levelSign(level) + dir);
+                    genDirTree(f.getAbsolutePath(), level, dir);
+                } else {
+                    System.out.println(levelSign(level) + f.getName());
+                }
+            }
+        }
+    }
+    //文件层级信息
+    private static String levelSign(int level) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" ├─");
+        for (int x = 0; x < level; x++) {
+            sb.insert(0, " │   ");
+        }
+        return sb.toString();
     }
 }
