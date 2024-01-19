@@ -42,3 +42,4 @@
 - 接受者：有点随意，这里没有向具体命令的类中传入参数，一般来说会向具体命令的类中传入参数
 - 调用者：CommandExecutor
 - 客户端：CommandTest
+![img_4.png](img_4.png)
