@@ -23,6 +23,7 @@ public class Main {
         args = new String[]{"config"};
         args = new String[]{"list"};
         args = new String[]{"generate", "-l", "-a", "-pl"};
+        args = new String[]{"--help"};
 
         CommandExecutor commandExecutor = new CommandExecutor();
         commandExecutor.doExecute(args);
