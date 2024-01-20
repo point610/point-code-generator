@@ -6,21 +6,17 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.util.Map;
 
 public class Utils {
     /**
      * 复制文件
      */
     public static void copyStaticFiles(String from, String to) {
-        File file = new File(to);
+        File file =  new File(FileSystems.getDefault().getPath(to).getParent().toString());
         if (!file.exists()) {
             file.mkdirs();
         }
@@ -86,7 +82,7 @@ public class Utils {
 
         // 创建模板对象，加载指定模板
         String templateName = new File(form).getName();
-        Template template = configuration.getTemplate(templateName);
+        Template template = configuration.getTemplate(templateName,"UTF-8");
 
         // 判断是否存在目录
         File file = new File(FileSystems.getDefault().getPath(to).getParent().toString());
@@ -95,7 +91,7 @@ public class Utils {
         }
 
         // 生成
-        Writer out = new FileWriter(to);
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(Paths.get(to)), StandardCharsets.UTF_8));
         template.process(model, out);
 
         // 生成文件后别忘了关闭哦

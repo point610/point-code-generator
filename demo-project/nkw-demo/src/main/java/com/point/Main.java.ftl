@@ -1,11 +1,10 @@
-package ${basePackage};
+package com.point;
 
 import java.util.Scanner;
 
 /**
  * 牛客网模板
  * @author ${author!'point'}
- * @version ${version!'1.0'}
  */
 // 注意类名必须为 Main, 不要有任何 package xxx 信息
 public class Main {

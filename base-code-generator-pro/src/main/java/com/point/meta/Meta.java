@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Data
@@ -47,7 +48,7 @@ public class Meta {
             private String fieldName;
             private String type;
             private String description;
-            private Boolean defaultValue;
+            private Object defaultValue;
             private String abbr;
         }
     }

@@ -45,7 +45,6 @@ public class GenerateCommand implements Callable<Integer> {
         // 生成配置文件
         NKWConfig nkwConfig = new NKWConfig();
         BeanUtil.copyProperties(this, nkwConfig);
-        System.out.println("配置信息：" + nkwConfig);
         Utils.doGenerate(fromFile, toFile, nkwConfig);
         return 0;
     }

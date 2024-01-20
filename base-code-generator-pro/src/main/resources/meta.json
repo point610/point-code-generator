@@ -12,7 +12,7 @@
     "files": [
       {
         "inputPath": "src/main/java/com/point/Main.java.ftl",
-        "outputPath": "src/com/yupi/acm/MainTemplate.java",
+        "outputPath": "src/main/java/com/point/Main.java",
         "type": "file",
         "generateType": "dynamic"
       },

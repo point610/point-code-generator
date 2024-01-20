@@ -14,7 +14,7 @@ public class ListCommand implements Runnable {
         File parentFile = new File(projectPath).getParentFile();
 
         // 输入路径
-        String inputPath = new File(parentFile, "demo-project").getAbsolutePath();
+        String inputPath = "${fileConfig.inputRootPath}";;
 
         // 输出文件树形结构
         Utils.genDirTree(inputPath, -1, "");
