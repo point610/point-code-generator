@@ -70,7 +70,31 @@ public class Main {
 
         // 编写脚本
         String jarName = String.format("%s-%s-jar-with-dependencies.jar", meta.getName(), meta.getVersion());
-        Utils.generateBat(mavenOutputPath, "target" + File.separator + jarName);
+        String jarPath = "target" + File.separator + jarName;
+        Utils.generateBat(mavenOutputPath, jarPath);
+
+        // 代码空间优化
+        // 删除生成代码的源代码
+        String srcPath = mavenOutputPath + File.separator + "src";
+        Utils.deleteFileorDir(srcPath);
+
+        // 删除pom.xml文件
+        String mvnxmlPath = mavenOutputPath + File.separator + "pom.xml";
+        Utils.deleteFileorDir(mvnxmlPath);
+
+        // 删除target，除了jar包
+        String oldJarPath = mavenOutputPath + jarPath;
+        String newJarPath = mavenOutputPath + jarName;
+        System.out.println("oldJarPath  " + oldJarPath);
+        System.out.println("newJarPath  " + newJarPath);
+        // 移动jar包
+        Utils.copyStaticFiles(oldJarPath, newJarPath);
+        // 删除target
+        String targetPath = mavenOutputPath + File.separator + "target";
+        Utils.deleteFileorDir(targetPath);
+        // 移动jar包
+        Utils.copyStaticFiles(newJarPath, oldJarPath);
+        Utils.deleteFileorDir(newJarPath);
 
     }
 

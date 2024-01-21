@@ -36,6 +36,19 @@ public class Utils {
     }
 
     /**
+     * 删除指定文件，或目录下的所有文件
+     */
+    public static void deleteFileorDir(String path) {
+        File file = new File(path);
+        if (file.isDirectory()) {
+            FileUtil.del(path);
+        } else {
+            FileUtil.del(file);
+        }
+    }
+
+
+    /**
      * 复制文件
      */
     public static void copyStaticFiles(String from, String to) {

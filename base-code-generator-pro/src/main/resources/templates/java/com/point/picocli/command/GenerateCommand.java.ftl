@@ -46,13 +46,13 @@ public class GenerateCommand implements Callable<Integer> {
 
     <#list fileConfig.files as fileInfo>
 
-        fromFile = new File(fromDir, "${fileInfo.inputPath}").getAbsolutePath();
-        toFile = new File(toDir, "${fileInfo.outputPath}").getAbsolutePath();
-        <#if fileInfo.generateType == "static">
-            Utils.copyStaticFiles(fromFile, toFile);
-        <#else>
-            Utils.doGenerate(fromFile, toFile, nkwConfig);
-        </#if>
+    fromFile = new File(fromDir, "${fileInfo.inputPath}").getAbsolutePath();
+    toFile = new File(toDir, "${fileInfo.outputPath}").getAbsolutePath();
+    <#if fileInfo.generateType == "static">
+    Utils.copyStaticFiles(fromFile, toFile);
+    <#else>
+    Utils.doGenerate(fromFile, toFile, nkwConfig);
+    </#if>
     </#list>
 
         return 0;
