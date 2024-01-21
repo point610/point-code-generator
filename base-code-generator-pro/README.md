@@ -15,7 +15,25 @@
 - 在生成项目中生成.ignore
 - 在生成项目中生成README
 
-
+- 提高代码的可移植性
+  - 在meta.json中添加sourceRootPath字段
+  - 然后在程序中将代码模板项目从sourceRootPath中复制到inputRootPath中
+  - 再进行项目的处理
+  - sourceRootPath 为模板项目的rootPath--需要带项目名
+  - inputRootPath 暂时存放模板项目的路径，为生成最终项目的模板项目来源路径--需要带项目名
+  - outputRootPath 为输出最终模板项目的路径--不用带项目名
+  - sourceRootPath 末尾的项目名需要与inputRootPath末尾的项目名一致
+- 增加项目的介绍
+  - 做一个README.md的模板
+- 简化代码，优化生成代码的空间
+  - 删除生成代码的源代码，target，pom.xml文件，只留下jar包和执行的脚本文件
+- 提高代码的健壮性
+  - 校验meta.json中的属性是否符合要求
+  - 自定义异常类
+- 降低代码的圈复杂度
+- 提高代码的可扩展性
+  - 在项目中抽出常量值
+  - 使用模板方法模式
 
 ### bug
 在meta.json中,modelConfig的models的defaultValue有两种类型:String和boolea
@@ -24,7 +42,7 @@
 读取meta.json中的元信息,author为String,但是生成的结果默认值为Boolean
 ![img.png](img.png)
 
-原因:使用GsonFormatPlus插件生成的可能只识别第一个defaultValue的类型,然后创建meta类时,将defaultValue的类型赋值为boolean
+原因:使用GsonFormatPlus插件生成的可能只识别第一个defaultValtiue的类型,然后创建meta类时,将defaultValue的类型赋值为boolean
 解决方法:将meta类中的defaultValue类型扩大,修改为Object
 ![img_2.png](img_2.png)
 

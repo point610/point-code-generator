@@ -27,7 +27,7 @@ public class GenerateCommand implements Callable<Integer> {
     String toDir ="${fileConfig.outputRootPath}";
     File toDirPath = new File(toDir);
     if (toDirPath.exists()) {
-    toDirPath.mkdirs();
+        toDirPath.mkdirs();
     }
 
     System.out.println(fromDir);

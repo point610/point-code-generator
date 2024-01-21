@@ -26,6 +26,9 @@ public class Main {
         String inputPath = classPathResource.getAbsolutePath() + File.separator + "templates" + File.separator;
         String outputPath = projectPath + File.separator + ".generated" + File.separator + meta.getName() + File.separator + "src" + File.separator + "main" + File.separator;
 
+        Utils.copyStaticDir(meta.getFileConfig().getSourceRootPath(),
+                projectPath + File.separator + ".generated" + File.separator + meta.getName() + File.separator + new File(meta.getFileConfig().getInputRootPath()).getParent());
+
         // 移动项目中的所有文件
         String filePath;
         // java/com/point/model/NKWConfig.java.ftl

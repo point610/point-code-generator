@@ -9,9 +9,6 @@ import java.io.File;
 public class ListCommand implements Runnable {
 
     public void run() {
-        String projectPath = System.getProperty("user.dir");
-        // 整个项目的根路径
-        File parentFile = new File(projectPath).getParentFile();
 
         // 输入路径
         String inputPath = "${fileConfig.inputRootPath}";;

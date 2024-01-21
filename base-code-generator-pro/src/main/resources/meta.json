@@ -6,7 +6,8 @@
   "author": "point",
   "createTime": "2024-01-20",
   "fileConfig": {
-    "inputRootPath": "E:/Java_Projection/point-code-generator/demo-project/nkw-demo",
+    "sourceRootPath": "E:/Java_Projection/point-code-generator/demo-project/nkw-demo",
+    "inputRootPath": ".source/ssss/nkw-demo",
     "outputRootPath": ".temp",
     "type": "dir",
     "files": [
