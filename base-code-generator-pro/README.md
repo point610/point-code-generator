@@ -35,6 +35,18 @@
   - 在项目中抽出常量值
   - 使用模板方法模式
 
+### 模板方法模式
+- 将代码抽象为多个顺序执行的流程，每个流程可以由一个方法实现
+- 这里将流程抽象为
+  - 移动模板项目代码
+  - 动态生成代码生成器
+  - 使用maven打包
+  - 编写脚本
+  - 代码空间优化
+- 这里模板类为 GenerateTemplate，为生成代码生成器的模板，有模板流程
+- 创建 GenerateCode 继承 GenerateTemplate，可以重写 GenerateTemplate 中的模板方法
+- 在main中使用的时 GenerateCode 的方法
+
 ### bug
 在meta.json中,modelConfig的models的defaultValue有两种类型:String和boolea
 ![img_1.png](img_1.png)
