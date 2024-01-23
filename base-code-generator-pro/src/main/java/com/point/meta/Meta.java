@@ -22,6 +22,7 @@ public class Meta {
     @NoArgsConstructor
     @Data
     public static class FileConfigDTO {
+
         private String inputRootPath;
         private String sourceRootPath;
         private String outputRootPath;
@@ -33,10 +34,16 @@ public class Meta {
         public static class FilesDTO {
             private String inputPath;
             private String outputPath;
-            private String type;
             private String generateType;
+            private String type;
+
+            private String groupKey;
+            private String groupName;
             private String condition;
+            private List<FilesDTO> files;
+
         }
+
     }
 
     @NoArgsConstructor

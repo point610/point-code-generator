@@ -45,6 +45,12 @@
   - String为getxxx
   - 解决方法：将所有的属性都修改为public，直接取到属性值，而不是通过getter
 
+- 一个参数控制多个文件生成
+  - 在files中加入分组的group字段和condition字段
+  - files中的一个file可以有group，也可以没有
+  - 将file中的condition字段删除
+  - 在有group字段的类file中，可以在嵌套多个file
+
 
 
 ### 模板方法模式

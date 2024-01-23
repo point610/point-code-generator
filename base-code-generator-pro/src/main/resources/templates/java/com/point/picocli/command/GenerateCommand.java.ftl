@@ -12,13 +12,14 @@ import java.util.concurrent.Callable;
 
 @Command(name = "generate", description = "生成代码", mixinStandardHelpOptions = true)
 @Data
-public class GenerateCommand implements Callable<Integer> {
+public class GenerateCommand implements Callable
+<Integer> {
 
-<#list modelConfig.models as modelInfo>
+    <#list modelConfig.models as modelInfo>
 
-    @Option(names = {<#if modelInfo.abbr??>"-${modelInfo.abbr}", </#if>"--${modelInfo.fieldName}"}, arity = "0..1", <#if modelInfo.description??>description = "${modelInfo.description}", </#if>interactive = true, echo = true)
-    private ${modelInfo.type} ${modelInfo.fieldName}<#if modelInfo.defaultValue??> = ${modelInfo.defaultValue?c}</#if>;
-</#list>
+        @Option(names = {<#if modelInfo.abbr??>"-${modelInfo.abbr}", </#if>"--${modelInfo.fieldName}"}, arity = "0..1", <#if modelInfo.description??>description = "${modelInfo.description}", </#if>interactive = true, echo = true)
+        private ${modelInfo.type} ${modelInfo.fieldName}<#if modelInfo.defaultValue??> = ${modelInfo.defaultValue?c}</#if>;
+    </#list>
 
     public Integer call() throws Exception {
 
@@ -44,43 +45,68 @@ public class GenerateCommand implements Callable<Integer> {
     System.out.println("配置信息：" + model);
     // Utils.doGenerate(fromFile, toFile, model);
 
-<#-- 获取模型变量 -->
-<#list modelConfig.models as modelInfo>
-<#-- 有分组 -->
-    <#if modelInfo.groupKey??>
-        <#list modelInfo.models as subModelInfo>
-            ${subModelInfo.type} ${subModelInfo.fieldName} = model.${modelInfo.groupKey}.${subModelInfo.fieldName};
-        </#list>
-    <#else>
-        ${modelInfo.type} ${modelInfo.fieldName} = model.${modelInfo.fieldName};
-    </#if>
-</#list>
-
-
-<#list fileConfig.files as fileInfo>
-
-    <#if fileInfo.condition??>
-        if (${fileInfo.condition}){
-        fromFile = new File(fromDir, "${fileInfo.inputPath}").getAbsolutePath();
-        toFile = new File(toDir, "${fileInfo.outputPath}").getAbsolutePath();
-        <#if fileInfo.generateType == "static">
-            Utils.copyStaticFiles(fromFile, toFile);
+    <#-- 获取模型变量 -->
+    <#list modelConfig.models as modelInfo>
+    <#-- 有分组 -->
+        <#if modelInfo.groupKey??>
+            <#list modelInfo.models as subModelInfo>
+                ${subModelInfo.type} ${subModelInfo.fieldName} = model.${modelInfo.groupKey}.${subModelInfo.fieldName};
+            </#list>
         <#else>
-            Utils.doGenerate(fromFile, toFile, model);
+            ${modelInfo.type} ${modelInfo.fieldName} = model.${modelInfo.fieldName};
         </#if>
-        }
-    <#else>
-        fromFile = new File(fromDir, "${fileInfo.inputPath}").getAbsolutePath();
-        toFile = new File(toDir, "${fileInfo.outputPath}").getAbsolutePath();
-        <#if fileInfo.generateType == "static">
-            Utils.copyStaticFiles(fromFile, toFile);
+    </#list>
+
+
+    <#list fileConfig.files as fileInfo>
+        <#if fileInfo.groupKey??>
+            <#if fileInfo.condition??>
+                if (${fileInfo.condition}){
+                <#list fileInfo.files as file>
+                    fromFile = new File(fromDir, "${file.inputPath}").getAbsolutePath();
+                    toFile = new File(toDir, "${file.outputPath}").getAbsolutePath();
+                    <#if file.generateType == "static">
+                        Utils.copyStaticFiles(fromFile, toFile);
+                    <#else>
+                        Utils.doGenerate(fromFile, toFile, model);
+                    </#if>
+                </#list>
+                }
+            <#else >
+                <#list fileInfo.files as file>
+                    fromFile = new File(fromDir, "${file.inputPath}").getAbsolutePath();
+                    toFile = new File(toDir, "${file.outputPath}").getAbsolutePath();
+                    <#if file.generateType == "static">
+                        Utils.copyStaticFiles(fromFile, toFile);
+                    <#else>
+                        Utils.doGenerate(fromFile, toFile, model);
+                    </#if>
+                </#list>
+            </#if>
         <#else>
-            Utils.doGenerate(fromFile, toFile, model);
+            <#if fileInfo.condition??>
+                if (${fileInfo.condition}){
+                fromFile = new File(fromDir, "${fileInfo.inputPath}").getAbsolutePath();
+                toFile = new File(toDir, "${fileInfo.outputPath}").getAbsolutePath();
+                <#if fileInfo.generateType == "static">
+                    Utils.copyStaticFiles(fromFile, toFile);
+                <#else>
+                    Utils.doGenerate(fromFile, toFile, model);
+                </#if>
+                }
+            <#else>
+                fromFile = new File(fromDir, "${fileInfo.inputPath}").getAbsolutePath();
+                toFile = new File(toDir, "${fileInfo.outputPath}").getAbsolutePath();
+                <#if fileInfo.generateType == "static">
+                    Utils.copyStaticFiles(fromFile, toFile);
+                <#else>
+                    Utils.doGenerate(fromFile, toFile, model);
+                </#if>
+
+            </#if>
         </#if>
 
-    </#if>
-
-</#list>
+    </#list>
 
     return 0;
     }

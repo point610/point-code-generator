@@ -77,6 +77,9 @@ public class MetaValidator {
             return;
         }
         for (Meta.FileConfigDTO.FilesDTO fileInfo : fileInfoList) {
+            if (fileInfo.getType().equals(FileTypeEnum.GROUP.getValue())) {
+                continue;
+            }
             // inputPath: 必填
             String inputPath = fileInfo.getInputPath();
             if (StrUtil.isBlank(inputPath)) {
