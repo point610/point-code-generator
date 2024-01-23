@@ -59,7 +59,15 @@ public class Meta {
             private String description;
             private Object defaultValue;
             private String abbr;
+
+            private String groupKey;
+            private String groupName;
             private String condition;
+            private List<ModelsDTO> models;
+
+            // 中间参数
+            // 该分组下所有参数拼接字符串
+            private String allArgsStr;
         }
     }
 }

@@ -57,18 +57,26 @@
         "abbr": "l"
       },
       {
-        "fieldName": "author",
-        "type": "String",
-        "description": "作者注释",
-        "defaultValue": "point",
-        "abbr": "a"
-      },
-      {
-        "fieldName": "printList",
-        "type": "boolean",
-        "description": "是否输出数组信息",
-        "defaultValue": true,
-        "abbr": "pl"
+        "groupKey": "mainTemplate",
+        "groupName": "核心模板",
+        "type": "MainTemplate",
+        "condition": "loop",
+        "models": [
+          {
+            "fieldName": "author",
+            "type": "String",
+            "description": "作者注释",
+            "defaultValue": "point",
+            "abbr": "a"
+          },
+          {
+            "fieldName": "printList",
+            "type": "boolean",
+            "description": "是否输出数组信息",
+            "defaultValue": true,
+            "abbr": "pl"
+          }
+        ]
       }
     ]
   }

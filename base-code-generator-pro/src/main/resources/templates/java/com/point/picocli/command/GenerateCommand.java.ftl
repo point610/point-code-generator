@@ -6,6 +6,7 @@ import ${basePackage}.utils.Utils;
 import lombok.Data;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
+import picocli.CommandLine;
 
 import java.io.File;
 import java.util.concurrent.Callable;
@@ -16,9 +17,32 @@ public class GenerateCommand implements Callable
 <Integer> {
 
     <#list modelConfig.models as modelInfo>
+        <#if modelInfo.groupKey??>
+            /**
+            * ${modelInfo.groupName}
+            */
+            static NKWConfig.${modelInfo.type} ${modelInfo.groupKey} = new NKWConfig.${modelInfo.type}();
 
-        @Option(names = {<#if modelInfo.abbr??>"-${modelInfo.abbr}", </#if>"--${modelInfo.fieldName}"}, arity = "0..1", <#if modelInfo.description??>description = "${modelInfo.description}", </#if>interactive = true, echo = true)
-        private ${modelInfo.type} ${modelInfo.fieldName}<#if modelInfo.defaultValue??> = ${modelInfo.defaultValue?c}</#if>;
+            @Command(name = "${modelInfo.groupKey}")
+            @Data
+            public static class ${modelInfo.type}Command implements Runnable {
+            <#list modelInfo.models as subModelInfo>
+                @Option(names = {<#if subModelInfo.abbr??>"-${subModelInfo.abbr}", </#if>"--${subModelInfo.fieldName}"}, arity = "0..1", <#if subModelInfo.description??>description = "${subModelInfo.description}", </#if>interactive = true, echo = true)
+                private ${subModelInfo.type} ${subModelInfo.fieldName}<#if subModelInfo.defaultValue??> = ${subModelInfo.defaultValue?c}</#if>;
+            </#list>
+
+            @Override
+            public void run() {
+            <#list modelInfo.models as subModelInfo>
+                ${modelInfo.groupKey}.${subModelInfo.fieldName} = ${subModelInfo.fieldName};
+            </#list>
+            }
+            }
+
+        <#else>
+            @Option(names = {<#if modelInfo.abbr??>"-${modelInfo.abbr}", </#if>"--${modelInfo.fieldName}"}, arity = "0..1", <#if modelInfo.description??>description = "${modelInfo.description}", </#if>interactive = true, echo = true)
+            private ${modelInfo.type} ${modelInfo.fieldName}<#if modelInfo.defaultValue??> = ${modelInfo.defaultValue?c}</#if>;
+        </#if>
     </#list>
 
     public Integer call() throws Exception {
@@ -39,9 +63,30 @@ public class GenerateCommand implements Callable
     String fromFile;
     String toFile;
 
+
+    <#list modelConfig.models as modelInfo>
+        <#if modelInfo.groupKey??>
+            <#if modelInfo.condition??>
+                if (${modelInfo.condition}) {
+                CommandLine commandLine = new CommandLine(${modelInfo.type}Command.class);
+                commandLine.execute(${modelInfo.allArgsStr});
+                }
+            <#else>
+                CommandLine commandLine = new CommandLine(${modelInfo.type}Command.class);
+                commandLine.execute(${modelInfo.allArgsStr});
+            </#if>
+        </#if>
+    </#list>
+
+
     // 生成配置文件
     NKWConfig model = new NKWConfig();
     BeanUtil.copyProperties(this, model);
+    <#list modelConfig.models as modelInfo>
+        <#if modelInfo.groupKey??>
+            model.${modelInfo.groupKey} = ${modelInfo.groupKey};
+        </#if>
+    </#list>
     System.out.println("配置信息：" + model);
     // Utils.doGenerate(fromFile, toFile, model);
 
@@ -110,4 +155,4 @@ public class GenerateCommand implements Callable
 
     return 0;
     }
-}
+    }

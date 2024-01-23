@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 /**
  * 牛客网模板
- * @author ${author!'point'}
+ * @author ${mainTemplate.author!'point'}
  */
 // 注意类名必须为 Main, 不要有任何 package xxx 信息
 public class Main {
@@ -20,7 +20,7 @@ public class Main {
 
     }
 
-<#if printList>
+<#if mainTemplate.printList>
     private static void printList(int[] list) {
         for (int i : list) {
             System.out.printf(String.valueOf(i + ' '));
