@@ -38,14 +38,13 @@ public class GenerateCommand implements Callable<Integer> {
         Utils.copyStaticDir(fromDir, toDir);
 
         // 替换动态的模板文件
-
         String fromFile = System.getProperty("user.dir") + File.separator + "src/main/resources/templates/NiuKeWangPro/Main.java.ftl";
         String toFile = toDir + "/nkw-demo/src/main/java/com/point/Main.java";
 
         // 生成配置文件
-        NKWConfig nkwConfig = new NKWConfig();
-        BeanUtil.copyProperties(this, nkwConfig);
-        Utils.doGenerate(fromFile, toFile, nkwConfig);
+        NKWConfig model = new NKWConfig();
+        BeanUtil.copyProperties(this, model);
+        Utils.doGenerate(fromFile, toFile, model);
         return 0;
     }
 }

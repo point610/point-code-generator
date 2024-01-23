@@ -35,6 +35,18 @@
   - 在项目中抽出常量值
   - 使用模板方法模式
 
+- 控制单个文件生成
+  - 在meta中加入对应的数组，加入condition来判断条件是否成立
+  - 在meta文件的model加入needgit字段，判断是否需要生成ignore文件
+  - 在meta文件中的files加入condition字段判断条件是否成立
+  - 修改对应的对象类
+- 在项目中需要取到model中的属性，但是Boolean和String的取值方法不一样
+  - boolea为isxxx
+  - String为getxxx
+  - 解决方法：将所有的属性都修改为public，直接取到属性值，而不是通过getter
+
+
+
 ### 模板方法模式
 - 将代码抽象为多个顺序执行的流程，每个流程可以由一个方法实现
 - 这里将流程抽象为

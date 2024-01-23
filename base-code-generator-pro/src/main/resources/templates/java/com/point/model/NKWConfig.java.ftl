@@ -10,9 +10,9 @@ public class NKWConfig {
 <#list modelConfig.models as modelInfo>
 
 <#if modelInfo.defaultValue??>
-    private ${modelInfo.type} ${modelInfo.fieldName} = ${modelInfo.defaultValue?c};
+    public ${modelInfo.type} ${modelInfo.fieldName} = ${modelInfo.defaultValue?c};
 <#else>
-    private ${modelInfo.type} ${modelInfo.fieldName};
+    public ${modelInfo.type} ${modelInfo.fieldName};
 </#if>
 
 </#list>

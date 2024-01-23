@@ -8,18 +8,24 @@ import lombok.Data;
 @Data
 public class NKWConfig {
 
+
     /**
      * 是否生成循环
      */
-    private boolean loop = true;
+    public boolean loop = true;
 
     /**
      * 是否输出数组信息
      */
-    private boolean printList = true;
+    public boolean printList = true;
 
     /**
      * 作者注释
      */
-    private String author = "point";
+    public String author = "point";
+
+    /**
+     * 是否生成.gitignore文件
+     */
+    public boolean neetGit = true;
 }

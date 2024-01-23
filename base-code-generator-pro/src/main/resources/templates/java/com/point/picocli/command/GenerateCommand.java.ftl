@@ -14,11 +14,11 @@ import java.util.concurrent.Callable;
 @Data
 public class GenerateCommand implements Callable<Integer> {
 
-    <#list modelConfig.models as modelInfo>
+<#list modelConfig.models as modelInfo>
 
-        @Option(names = {<#if modelInfo.abbr??>"-${modelInfo.abbr}", </#if>"--${modelInfo.fieldName}"}, arity = "0..1", <#if modelInfo.description??>description = "${modelInfo.description}", </#if>interactive = true, echo = true)
-        private ${modelInfo.type} ${modelInfo.fieldName}<#if modelInfo.defaultValue??> = ${modelInfo.defaultValue?c}</#if>;
-    </#list>
+    @Option(names = {<#if modelInfo.abbr??>"-${modelInfo.abbr}", </#if>"--${modelInfo.fieldName}"}, arity = "0..1", <#if modelInfo.description??>description = "${modelInfo.description}", </#if>interactive = true, echo = true)
+    private ${modelInfo.type} ${modelInfo.fieldName}<#if modelInfo.defaultValue??> = ${modelInfo.defaultValue?c}</#if>;
+</#list>
 
     public Integer call() throws Exception {
 
@@ -27,7 +27,7 @@ public class GenerateCommand implements Callable<Integer> {
     String toDir ="${fileConfig.outputRootPath}";
     File toDirPath = new File(toDir);
     if (toDirPath.exists()) {
-        toDirPath.mkdirs();
+    toDirPath.mkdirs();
     }
 
     System.out.println(fromDir);
@@ -39,22 +39,49 @@ public class GenerateCommand implements Callable<Integer> {
     String toFile;
 
     // 生成配置文件
-    NKWConfig nkwConfig = new NKWConfig();
-    BeanUtil.copyProperties(this, nkwConfig);
-    System.out.println("配置信息：" + nkwConfig);
-    // Utils.doGenerate(fromFile, toFile, nkwConfig);
+    NKWConfig model = new NKWConfig();
+    BeanUtil.copyProperties(this, model);
+    System.out.println("配置信息：" + model);
+    // Utils.doGenerate(fromFile, toFile, model);
 
-    <#list fileConfig.files as fileInfo>
-
-    fromFile = new File(fromDir, "${fileInfo.inputPath}").getAbsolutePath();
-    toFile = new File(toDir, "${fileInfo.outputPath}").getAbsolutePath();
-    <#if fileInfo.generateType == "static">
-    Utils.copyStaticFiles(fromFile, toFile);
+<#-- 获取模型变量 -->
+<#list modelConfig.models as modelInfo>
+<#-- 有分组 -->
+    <#if modelInfo.groupKey??>
+        <#list modelInfo.models as subModelInfo>
+            ${subModelInfo.type} ${subModelInfo.fieldName} = model.${modelInfo.groupKey}.${subModelInfo.fieldName};
+        </#list>
     <#else>
-    Utils.doGenerate(fromFile, toFile, nkwConfig);
+        ${modelInfo.type} ${modelInfo.fieldName} = model.${modelInfo.fieldName};
     </#if>
-    </#list>
+</#list>
 
-        return 0;
+
+<#list fileConfig.files as fileInfo>
+
+    <#if fileInfo.condition??>
+        if (${fileInfo.condition}){
+        fromFile = new File(fromDir, "${fileInfo.inputPath}").getAbsolutePath();
+        toFile = new File(toDir, "${fileInfo.outputPath}").getAbsolutePath();
+        <#if fileInfo.generateType == "static">
+            Utils.copyStaticFiles(fromFile, toFile);
+        <#else>
+            Utils.doGenerate(fromFile, toFile, model);
+        </#if>
+        }
+    <#else>
+        fromFile = new File(fromDir, "${fileInfo.inputPath}").getAbsolutePath();
+        toFile = new File(toDir, "${fileInfo.outputPath}").getAbsolutePath();
+        <#if fileInfo.generateType == "static">
+            Utils.copyStaticFiles(fromFile, toFile);
+        <#else>
+            Utils.doGenerate(fromFile, toFile, model);
+        </#if>
+
+    </#if>
+
+</#list>
+
+    return 0;
     }
 }

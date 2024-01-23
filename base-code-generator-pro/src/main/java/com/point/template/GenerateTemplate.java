@@ -36,7 +36,7 @@ public class GenerateTemplate {
         String jarName = generateScript(meta, projectOutputPath);
 
         // 代码空间优化
-        SimplifyPoject(projectOutputPath, jarName);
+        //SimplifyPoject(projectOutputPath, jarName);
 
     }
 
