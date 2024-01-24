@@ -80,6 +80,8 @@
     - 当存在文件时,需要对files和models进行去重
     - files对input和groupKey进行去重
     - models对fieldName和groupKey进行去重
+    - 对挖空代码进行方法的抽象
+    - 对需要挖空的代码进行挖空-先处理单个文件
 
 ### 模板方法模式
 - 将代码抽象为多个顺序执行的流程，每个流程可以由一个方法实现
