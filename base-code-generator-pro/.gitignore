@@ -1,6 +1,7 @@
 ### MY Ignore ###
 .idea
 .generated
+.temp
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
