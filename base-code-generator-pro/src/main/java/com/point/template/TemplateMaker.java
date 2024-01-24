@@ -1,8 +1,5 @@
 package com.point.template;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.IdUtil;
-
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -10,22 +7,18 @@ import cn.hutool.json.JSONUtil;
 import com.point.meta.Meta.ModelConfigDTO.ModelsDTO;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import cn.hutool.core.date.DateUtil;
 import com.point.meta.Meta;
 import com.point.utils.Utils;
-import com.sun.javafx.binding.StringFormatter;
-import sun.reflect.misc.FieldUtil;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class TemplateMaker {
-    public static long makeTemplate(Meta meta, Long id, String searchString) {
+    public static long makeTemplate(Meta meta, Long id, String searchString, List<String> inputFilesList) throws IOException {
         String projectPath = System.getProperty("user.dir");
         String sourceRootPath = meta.getFileConfig().getSourceRootPath();
 
@@ -34,30 +27,54 @@ public class TemplateMaker {
             //long id = IdUtil.getSnowflakeNextId();
             id = 1750053546704556032L;
         }
-        String tempDirPath = projectPath + File.separator + ".temp";
-        String tempPath = tempDirPath + File.separator + id;
+        String tempDirPath = (projectPath + File.separator + ".temp").replaceAll("\\\\", "/");
+        String tempPath = (tempDirPath + File.separator + id).replaceAll("\\\\", "/");
         if (!FileUtil.exist(tempPath)) {
             FileUtil.mkdir(tempPath);
             Utils.copyStaticDir(sourceRootPath, tempPath);
         }
 
-        List<Meta.FileConfigDTO.FilesDTO> files = meta.getFileConfig().getFiles();
-        for (Meta.FileConfigDTO.FilesDTO file : files) {
-            // 获取文件的输入路径
-            String fileinputpath = sourceRootPath + File.separator + file.getOutputPath();
-            String fileoutputpath = meta.getFileConfig().getInputRootPath() + File.separator + file.getInputPath();
-            // 获取文件的内容
-            String filecontent;
-            if (FileUtil.exist(fileoutputpath)) {
-                filecontent = FileUtil.readUtf8String(fileinputpath);
-            } else {
-                filecontent = FileUtil.readUtf8String(fileinputpath);
-            }
-            // 开始修改文件
-            String replacement = String.format("${%s}", meta.getModelConfig().getModels().get(0).getFieldName());
-            String newfileconent = StrUtil.replace(filecontent, searchString, replacement);
+        //List<Meta.FileConfigDTO.FilesDTO> filesDTOS = meta.getFileConfig().getFiles();
+        //for (Meta.FileConfigDTO.FilesDTO files : filesDTOS) {
+        //    if (FileUtil.isDirectory(sourceRootPath + File.separator + files.getInputPath())) {
+        //        List<File> loopFiles = FileUtil.loopFiles(sourceRootPath + File.separator + files.getInputPath());
+        //        for (File loopFile : loopFiles) {
+        //            System.out.println(loopFile.getAbsolutePath());
+        //            String fileinputpath = sourceRootPath + File.separator + files.getOutputPath();
+        //            String fileoutputpath = meta.getFileConfig().getInputRootPath() + File.separator + files.getInputPath();
+        //
+        //
+        //            //makeFileTemplate(meta, searchString, loopFile.getPath(), loopFile.getPath(), sourceRootPath);
+        //        }
+        //    } else {
+        //        String fileinputpath = sourceRootPath + File.separator + files.getOutputPath();
+        //        String fileoutputpath = meta.getFileConfig().getInputRootPath() + File.separator + files.getInputPath();
+        //        //System.out.println(fileinputpath);
+        //        //System.out.println(fileoutputpath);
+        //        makeFileTemplate(meta, searchString, fileinputpath, fileoutputpath, sourceRootPath);
+        //    }
+        //
+        //}
+        for (String inputFilePath : inputFilesList) {
+            String absolutePathTemp = sourceRootPath + File.separator + inputFilePath;
+            if (FileUtil.isDirectory(absolutePathTemp)) {
+                List<File> loopFiles = FileUtil.loopFiles(absolutePathTemp);
+                for (File loopFile : loopFiles) {
+                    String absoluteInputPath = loopFile.getAbsolutePath().replaceAll("\\\\", "/");
+                    String absoluteOutputPath = tempPath + File.separator + absoluteInputPath.replaceAll(sourceRootPath, String.valueOf(FileUtil.getLastPathEle(Paths.get(sourceRootPath)))) + ".ftl";
 
-            FileUtil.writeUtf8String(newfileconent, fileoutputpath);
+                    makeFileTemplate(meta, searchString, absoluteInputPath, absoluteOutputPath, absoluteInputPath.replaceAll(sourceRootPath + '/', ""));
+                }
+
+            } else {
+                String absoluteInputPath = absolutePathTemp.replaceAll("\\\\", "/");
+                String absoluteOutputPath = tempPath + File.separator + absoluteInputPath.replaceAll(sourceRootPath, String.valueOf(FileUtil.getLastPathEle(Paths.get(sourceRootPath)))) + ".ftl";
+                System.out.println(absoluteInputPath);
+                System.out.println(absoluteOutputPath);
+
+                makeFileTemplate(meta, searchString, absoluteInputPath, absoluteOutputPath, absoluteInputPath.replaceAll(sourceRootPath + '/', ""));
+
+            }
         }
 
         String metaOutputDir = System.getProperty("user.dir") + File.separator + ".temp" + File.separator + id;
@@ -93,10 +110,68 @@ public class TemplateMaker {
         return id;
     }
 
-    public static void main(String[] args) {
+    private static void makeFileTemplate(Meta meta, String searchString, String inputPath, String outputPath, String fileInputPath) {
+        // 获取文件的输入路径
+        // 获取文件的内容
+        String filecontent;
+        if (FileUtil.exist(outputPath)) {
+            filecontent = FileUtil.readUtf8String(inputPath);
+        } else {
+            filecontent = FileUtil.readUtf8String(inputPath);
+        }
+
+        // 开始修改文件
+        // 对多个模型字段进行处理
+        // TODO 对模型属性的分组处理
+        String newfileconent = filecontent;
+        for (ModelsDTO model : meta.getModelConfig().getModels()) {
+            String replacement = String.format("${%s}", model.getFieldName());
+            newfileconent = StrUtil.replace(filecontent, searchString, replacement);
+        }
+        Meta.FileConfigDTO.FilesDTO filesDTO = new Meta.FileConfigDTO.FilesDTO();
+        filesDTO.setOutputPath(fileInputPath);
+        filesDTO.setType("file");
+        if (newfileconent.equals(filecontent)) {
+            filesDTO.setInputPath(fileInputPath );
+            filesDTO.setGenerateType("static");
+
+        } else {
+            filesDTO.setInputPath(fileInputPath);
+            filesDTO.setGenerateType("dynamic"+ ".ftl");
+            FileUtil.writeUtf8String(newfileconent, outputPath);
+
+        }
+        meta.getFileConfig().getFiles().add(filesDTO);
+
+    }
+    //private static void makeFileTemplate(Meta meta, String searchString, String inputPath, String outputPath, String sourceRootPath) {
+    //    // 获取文件的输入路径
+    //    String fileinputpath = sourceRootPath + File.separator + outputPath;
+    //    String fileoutputpath = meta.getFileConfig().getInputRootPath() + File.separator + inputPath;
+    //    // 获取文件的内容
+    //    String filecontent;
+    //    if (FileUtil.exist(fileoutputpath)) {
+    //        filecontent = FileUtil.readUtf8String(fileinputpath);
+    //    } else {
+    //        filecontent = FileUtil.readUtf8String(fileinputpath);
+    //    }
+    //
+    //    // 开始修改文件
+    //    // 对多个模型字段进行处理
+    //    // TODO 对模型属性的分组处理
+    //    String newfileconent = filecontent;
+    //    for (ModelsDTO model : meta.getModelConfig().getModels()) {
+    //        String replacement = String.format("${%s}", model.getFieldName());
+    //        newfileconent = StrUtil.replace(filecontent, searchString, replacement);
+    //    }
+    //
+    //    FileUtil.writeUtf8String(newfileconent, fileoutputpath);
+    //}
+
+    public static void main(String[] args) throws IOException {
 
         String projectPath = System.getProperty("user.dir");
-        String sourceRootPath = "E:/Java_Projection/point-code-generator/demo-project/nkw-demo-pro";
+        String sourceRootPath = "E:/Java_Projection/point-code-generator/demo-project/springboot-init";
 
         // 创建隔离的空间,之后需要修改id为可选项,不是在这里生成
         //long id = IdUtil.getSnowflakeNextId();
@@ -125,22 +200,24 @@ public class TemplateMaker {
 
         // 编写files信息
         Meta.FileConfigDTO fileConfig = new Meta.FileConfigDTO();
-        fileConfig.setInputRootPath(tempPath + File.separator + FileUtil.getLastPathEle(Paths.get(sourceRootPath)));
+        fileConfig.setInputRootPath((tempPath + File.separator + FileUtil.getLastPathEle(Paths.get(sourceRootPath))).replaceAll("\\\\", "/"));
         fileConfig.setSourceRootPath(sourceRootPath);
         fileConfig.setOutputRootPath(".temp");
         fileConfig.setType("group");
         List<Meta.FileConfigDTO.FilesDTO> filesDTOList = new ArrayList<>();
         Meta.FileConfigDTO.FilesDTO filesDTOone = new Meta.FileConfigDTO.FilesDTO();
-        filesDTOone.setInputPath("src/main/java/com/point/Main.java.ftl");
-        filesDTOone.setOutputPath("src/main/java/com/point/Main.java");
-        filesDTOone.setGenerateType("dynamic");
-        filesDTOone.setType("file");
-        filesDTOList.add(filesDTOone);
+        //filesDTOone.setInputPath("src/main/java/com/point/Main.java.ftl");
+        //filesDTOone.setOutputPath("src/main/java/com/point/Main.java");
+        //filesDTOone.setInputPath("src/main/java/com/point/springbootinit/common");
+        //filesDTOone.setOutputPath("src/main/java/com/point/springbootinit/common");
+        //filesDTOone.setGenerateType("dynamic");
+        //filesDTOone.setType("dir");
+        //filesDTOList.add(filesDTOone);
         fileConfig.setFiles(filesDTOList);
 
         // 编写各种meta信息
-        String name = "base-code-generator-nkw";
-        String description = "牛客网java代码模板生成器";
+        String name = "springboot-init";
+        String description = "springboot-init模板";
         String basePackage = "com.point";
         String version = "1.0";
         String author = "point";
@@ -157,6 +234,8 @@ public class TemplateMaker {
 
         // 开始制作
         //makeTemplate(meta, sourceRootPath, id);
-        makeTemplate(meta, id, "Main");
+        List<String> inputFilesList = new ArrayList<>();
+        inputFilesList.add("src/main/java/com/point/springbootinit/common/ResultUtils.java");
+        makeTemplate(meta, id, "Main", inputFilesList);
     }
 }
