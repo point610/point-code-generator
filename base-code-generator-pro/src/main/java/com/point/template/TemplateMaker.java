@@ -132,12 +132,12 @@ public class TemplateMaker {
         filesDTO.setOutputPath(fileInputPath);
         filesDTO.setType("file");
         if (newfileconent.equals(filecontent)) {
-            filesDTO.setInputPath(fileInputPath );
+            filesDTO.setInputPath(fileInputPath);
             filesDTO.setGenerateType("static");
 
         } else {
-            filesDTO.setInputPath(fileInputPath);
-            filesDTO.setGenerateType("dynamic"+ ".ftl");
+            filesDTO.setInputPath(fileInputPath + ".ftl");
+            filesDTO.setGenerateType("dynamic");
             FileUtil.writeUtf8String(newfileconent, outputPath);
 
         }
@@ -235,7 +235,7 @@ public class TemplateMaker {
         // 开始制作
         //makeTemplate(meta, sourceRootPath, id);
         List<String> inputFilesList = new ArrayList<>();
-        inputFilesList.add("src/main/java/com/point/springbootinit/common/ResultUtils.java");
-        makeTemplate(meta, id, "Main", inputFilesList);
+        inputFilesList.add("src/main/java/com/point/springbootinit/common");
+        makeTemplate(meta, id, "BaseResponse", inputFilesList);
     }
 }
