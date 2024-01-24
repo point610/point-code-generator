@@ -77,7 +77,9 @@
     - 不需要复制项目
     - 在已有的项目中进行挖坑
     - 读取已经编写的meta.json文件,对meta对象进行追加信息
-
+    - 当存在文件时,需要对files和models进行去重
+    - files对input和groupKey进行去重
+    - models对fieldName和groupKey进行去重
 
 ### 模板方法模式
 - 将代码抽象为多个顺序执行的流程，每个流程可以由一个方法实现

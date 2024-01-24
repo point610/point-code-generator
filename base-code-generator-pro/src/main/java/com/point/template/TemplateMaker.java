@@ -1,8 +1,10 @@
 package com.point.template;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 
 import com.point.meta.Meta.ModelConfigDTO.ModelsDTO;
@@ -15,9 +17,13 @@ import cn.hutool.core.date.DateUtil;
 import com.point.meta.Meta;
 import com.point.utils.Utils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TemplateMaker {
+
     public static void main(String[] args) {
 
         String projectPath = System.getProperty("user.dir");
@@ -81,12 +87,20 @@ public class TemplateMaker {
         String metaOutputDir = System.getProperty("user.dir") + File.separator + ".temp" + File.separator + id;
         String metaOutputPath = System.getProperty("user.dir") + File.separator + ".temp" + File.separator + id + File.separator + "meta.json";
         if (FileUtil.exist(metaOutputPath)) {
+            // 获取存在的meta数据
             Meta oldmeta = JSONUtil.toBean(FileUtil.readUtf8String(metaOutputPath), Meta.class);
             List<Meta.FileConfigDTO.FilesDTO> oldFiles = oldmeta.getFileConfig().getFiles();
             List<ModelsDTO> oldModels = oldmeta.getModelConfig().getModels();
+
+            // 加入追加的配置信息
             oldFiles.addAll(filesDTOList);
             oldModels.addAll(modelsDTOList);
 
+            // 设置去重的配置信息
+            oldmeta.getFileConfig().setFiles(Utils.distinctFiles(oldFiles));
+            oldmeta.getModelConfig().setModels(Utils.distinctModels(oldModels));
+
+            // 转化为json
             String metajson = JSONUtil.toJsonPrettyStr(oldmeta);
             FileUtil.writeUtf8String(metajson, metaOutputPath);
         } else {

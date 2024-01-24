@@ -1,8 +1,11 @@
 package com.point.utils;
 
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
+import com.point.meta.Meta;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -10,7 +13,11 @@ import freemarker.template.TemplateException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Utils {
     public static void generateBat(String outputPath, String jarPath) throws IOException {
@@ -198,4 +205,103 @@ public class Utils {
         }
         return sb.toString();
     }
+
+    /**
+     * 文件去重
+     *
+     * @param fileInfoList
+     * @return
+     */
+    public static List<Meta.FileConfigDTO.FilesDTO> distinctFiles(List<Meta.FileConfigDTO.FilesDTO> fileInfoList) {
+        // 策略：同分组内文件 merge，不同分组保留
+
+        // 1. 有分组的，以组为单位划分
+        Map<String, List<Meta.FileConfigDTO.FilesDTO>> groupKeyFileInfoListMap = fileInfoList
+                .stream()
+                .filter(fileInfo -> StrUtil.isNotBlank(fileInfo.getGroupKey()))
+                .collect(
+                        Collectors.groupingBy(Meta.FileConfigDTO.FilesDTO::getGroupKey)
+                );
+
+
+        // 2. 同组内的文件配置合并
+        // 保存每个组对应的合并后的对象 map
+        Map<String, Meta.FileConfigDTO.FilesDTO> groupKeyMergedFileInfoMap = new HashMap<>();
+        for (Map.Entry<String, List<Meta.FileConfigDTO.FilesDTO>> entry : groupKeyFileInfoListMap.entrySet()) {
+            List<Meta.FileConfigDTO.FilesDTO> tempFileInfoList = entry.getValue();
+            List<Meta.FileConfigDTO.FilesDTO> newFileInfoList = new ArrayList<>(tempFileInfoList.stream()
+                    .flatMap(fileInfo -> fileInfo.getFiles().stream())
+                    .collect(
+                            Collectors.toMap(Meta.FileConfigDTO.FilesDTO::getInputPath, o -> o, (e, r) -> r)
+                    ).values());
+
+            // 使用新的 group 配置
+            Meta.FileConfigDTO.FilesDTO newFileInfo = CollUtil.getLast(tempFileInfoList);
+            newFileInfo.setFiles(newFileInfoList);
+            String groupKey = entry.getKey();
+            groupKeyMergedFileInfoMap.put(groupKey, newFileInfo);
+        }
+
+        // 3. 将文件分组添加到结果列表
+        List<Meta.FileConfigDTO.FilesDTO> resultList = new ArrayList<>(groupKeyMergedFileInfoMap.values());
+
+        // 4. 将未分组的文件添加到结果列表
+        List<Meta.FileConfigDTO.FilesDTO> noGroupFileInfoList = fileInfoList.stream().filter(fileInfo -> StrUtil.isBlank(fileInfo.getGroupKey()))
+                .collect(Collectors.toList());
+        resultList.addAll(new ArrayList<>(noGroupFileInfoList.stream()
+                .collect(
+                        Collectors.toMap(Meta.FileConfigDTO.FilesDTO::getInputPath, o -> o, (e, r) -> r)
+                ).values()));
+        return resultList;
+    }
+
+    /**
+     * 模型去重
+     *
+     * @param modelInfoList
+     * @return
+     */
+    public static List<Meta.ModelConfigDTO.ModelsDTO> distinctModels(List<Meta.ModelConfigDTO.ModelsDTO> modelInfoList) {
+        // 策略：同分组内模型 merge，不同分组保留
+
+        // 1. 有分组的，以组为单位划分
+        Map<String, List<Meta.ModelConfigDTO.ModelsDTO>> groupKeyModelInfoListMap = modelInfoList
+                .stream()
+                .filter(modelInfo -> StrUtil.isNotBlank(modelInfo.getGroupKey()))
+                .collect(
+                        Collectors.groupingBy(Meta.ModelConfigDTO.ModelsDTO::getGroupKey)
+                );
+
+
+        // 2. 同组内的模型配置合并
+        // 保存每个组对应的合并后的对象 map
+        Map<String, Meta.ModelConfigDTO.ModelsDTO> groupKeyMergedModelInfoMap = new HashMap<>();
+        for (Map.Entry<String, List<Meta.ModelConfigDTO.ModelsDTO>> entry : groupKeyModelInfoListMap.entrySet()) {
+            List<Meta.ModelConfigDTO.ModelsDTO> tempModelInfoList = entry.getValue();
+            List<Meta.ModelConfigDTO.ModelsDTO> newModelInfoList = new ArrayList<>(tempModelInfoList.stream()
+                    .flatMap(modelInfo -> modelInfo.getModels().stream())
+                    .collect(
+                            Collectors.toMap(Meta.ModelConfigDTO.ModelsDTO::getFieldName, o -> o, (e, r) -> r)
+                    ).values());
+
+            // 使用新的 group 配置
+            Meta.ModelConfigDTO.ModelsDTO newModelInfo = CollUtil.getLast(tempModelInfoList);
+            newModelInfo.setModels(newModelInfoList);
+            String groupKey = entry.getKey();
+            groupKeyMergedModelInfoMap.put(groupKey, newModelInfo);
+        }
+
+        // 3. 将模型分组添加到结果列表
+        List<Meta.ModelConfigDTO.ModelsDTO> resultList = new ArrayList<>(groupKeyMergedModelInfoMap.values());
+
+        // 4. 将未分组的模型添加到结果列表
+        List<Meta.ModelConfigDTO.ModelsDTO> noGroupModelInfoList = modelInfoList.stream().filter(modelInfo -> StrUtil.isBlank(modelInfo.getGroupKey()))
+                .collect(Collectors.toList());
+        resultList.addAll(new ArrayList<>(noGroupModelInfoList.stream()
+                .collect(
+                        Collectors.toMap(Meta.ModelConfigDTO.ModelsDTO::getFieldName, o -> o, (e, r) -> r)
+                ).values()));
+        return resultList;
+    }
+
 }
