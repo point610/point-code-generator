@@ -189,6 +189,7 @@ public class TemplateMaker {
         modelsDTOone.setAbbr("g");
         modelsDTOone.setCondition("needGit");
         modelsDTOList.add(modelsDTOone);
+
         ModelsDTO modelsDTOtwo = new ModelsDTO();
         modelsDTOtwo.setFieldName("loop");
         modelsDTOtwo.setType("boolean");
