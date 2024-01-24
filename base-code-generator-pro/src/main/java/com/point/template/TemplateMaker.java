@@ -1,7 +1,6 @@
 package com.point.template;
 
 import cn.hutool.core.util.IdUtil;
-import com.point.meta.Meta.FileConfigDTO.FilesDTO;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.json.JSONUtil;
@@ -9,6 +8,7 @@ import cn.hutool.json.JSONUtil;
 import com.point.meta.Meta.ModelConfigDTO.ModelsDTO;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import cn.hutool.core.date.DateUtil;
@@ -21,19 +21,17 @@ public class TemplateMaker {
     public static void main(String[] args) {
 
         String projectPath = System.getProperty("user.dir");
-        String originProjectPath = "E:/Java_Projection/point-code-generator/demo-project/nkw-demo";
+        String sourceRootPath = "E:/Java_Projection/point-code-generator/demo-project/nkw-demo";
 
-        long id = IdUtil.getSnowflakeNextId();
+        // 创建隔离的空间,之后需要修改id为可选项,不是在这里生成
+        //long id = IdUtil.getSnowflakeNextId();
+        long id = 1750053546704556032L;
         String tempDirPath = projectPath + File.separator + ".temp";
         String tempPath = tempDirPath + File.separator + id;
         if (!FileUtil.exist(tempPath)) {
             FileUtil.mkdir(tempPath);
-            Utils.copyStaticDir(originProjectPath, tempPath);
+            Utils.copyStaticDir(sourceRootPath, tempPath);
         }
-
-        System.out.println(projectPath);
-        System.out.println(tempDirPath);
-        System.out.println(tempPath);
 
         // 编写各种meta信息
         String name = "base-code-generator-nkw";
@@ -66,8 +64,8 @@ public class TemplateMaker {
 
         // 编写files信息
         Meta.FileConfigDTO fileConfig = new Meta.FileConfigDTO();
-        fileConfig.setInputRootPath(".source/ssss/nkw-demo");
-        fileConfig.setSourceRootPath("E:/Java_Projection/point-code-generator/demo-project/nkw-demo");
+        fileConfig.setInputRootPath(tempPath + File.separator + FileUtil.getLastPathEle(Paths.get(sourceRootPath)));
+        fileConfig.setSourceRootPath(sourceRootPath);
         fileConfig.setOutputRootPath(".temp");
         fileConfig.setType("group");
 
@@ -80,26 +78,35 @@ public class TemplateMaker {
         filesDTOList.add(filesDTOone);
         fileConfig.setFiles(filesDTOList);
 
-        // 将各种信息注入meta中
-        Meta meta = new Meta();
-        meta.setName(name);
-        meta.setDescription(description);
-        meta.setBasePackage(basePackage);
-        meta.setVersion(version);
-        meta.setAuthor(author);
-        meta.setCreateTime(createTime);
-        meta.setFileConfig(fileConfig);
-        meta.setModelConfig(modelConfig);
+        String metaOutputDir = System.getProperty("user.dir") + File.separator + ".temp" + File.separator + id;
+        String metaOutputPath = System.getProperty("user.dir") + File.separator + ".temp" + File.separator + id + File.separator + "meta.json";
+        if (FileUtil.exist(metaOutputPath)) {
+            Meta oldmeta = JSONUtil.toBean(FileUtil.readUtf8String(metaOutputPath), Meta.class);
+            List<Meta.FileConfigDTO.FilesDTO> oldFiles = oldmeta.getFileConfig().getFiles();
+            List<ModelsDTO> oldModels = oldmeta.getModelConfig().getModels();
+            oldFiles.addAll(filesDTOList);
+            oldModels.addAll(modelsDTOList);
 
-        // 将对象转换为obj对象
-        String metajson = JSONUtil.toJsonPrettyStr(meta);
-        String metaOutput = System.getProperty("user.dir") + File.separator + ".temp";
-        if (!FileUtil.exist(metaOutput)) {
-            FileUtil.mkdir(metaOutput);
+            String metajson = JSONUtil.toJsonPrettyStr(oldmeta);
+            FileUtil.writeUtf8String(metajson, metaOutputPath);
+        } else {
+            // 将各种信息注入meta中
+            Meta meta = new Meta();
+            meta.setName(name);
+            meta.setDescription(description);
+            meta.setBasePackage(basePackage);
+            meta.setVersion(version);
+            meta.setAuthor(author);
+            meta.setCreateTime(createTime);
+            meta.setFileConfig(fileConfig);
+            meta.setModelConfig(modelConfig);
+
+            // 将对象转换为obj对象
+            String metajson = JSONUtil.toJsonPrettyStr(meta);
+
+            FileUtil.mkdir(metaOutputDir);
+
+            FileUtil.writeUtf8String(metajson, metaOutputPath);
         }
-
-        FileUtil.writeUtf8String(metajson, metaOutput + File.separator + "meta.json");
     }
-
-
 }
