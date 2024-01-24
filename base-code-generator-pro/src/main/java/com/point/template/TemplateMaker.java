@@ -1,5 +1,8 @@
 package com.point.template;
 
+import cn.hutool.core.util.IdUtil;
+import com.point.meta.Meta.FileConfigDTO.FilesDTO;
+
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.json.JSONUtil;
 
@@ -10,11 +13,28 @@ import java.util.ArrayList;
 
 import cn.hutool.core.date.DateUtil;
 import com.point.meta.Meta;
+import com.point.utils.Utils;
 
 import java.util.List;
 
 public class TemplateMaker {
     public static void main(String[] args) {
+
+        String projectPath = System.getProperty("user.dir");
+        String originProjectPath = "E:/Java_Projection/point-code-generator/demo-project/nkw-demo";
+
+        long id = IdUtil.getSnowflakeNextId();
+        String tempDirPath = projectPath + File.separator + ".temp";
+        String tempPath = tempDirPath + File.separator + id;
+        if (!FileUtil.exist(tempPath)) {
+            FileUtil.mkdir(tempPath);
+            Utils.copyStaticDir(originProjectPath, tempPath);
+        }
+
+        System.out.println(projectPath);
+        System.out.println(tempDirPath);
+        System.out.println(tempPath);
+
         // 编写各种meta信息
         String name = "base-code-generator-nkw";
         String description = "牛客网java代码模板生成器";
@@ -46,6 +66,11 @@ public class TemplateMaker {
 
         // 编写files信息
         Meta.FileConfigDTO fileConfig = new Meta.FileConfigDTO();
+        fileConfig.setInputRootPath(".source/ssss/nkw-demo");
+        fileConfig.setSourceRootPath("E:/Java_Projection/point-code-generator/demo-project/nkw-demo");
+        fileConfig.setOutputRootPath(".temp");
+        fileConfig.setType("group");
+
         List<Meta.FileConfigDTO.FilesDTO> filesDTOList = new ArrayList<>();
         Meta.FileConfigDTO.FilesDTO filesDTOone = new Meta.FileConfigDTO.FilesDTO();
         filesDTOone.setInputPath("src/main/java/com/point/Main.java.ftl");
@@ -68,12 +93,13 @@ public class TemplateMaker {
 
         // 将对象转换为obj对象
         String metajson = JSONUtil.toJsonPrettyStr(meta);
-        String metaOutput = System.getProperty("user.dir") + File.separator + ".temp" + File.separator;
-        if (new File(metaOutput).exists()) {
-            new File(metaOutput).mkdirs();
+        String metaOutput = System.getProperty("user.dir") + File.separator + ".temp";
+        if (!FileUtil.exist(metaOutput)) {
+            FileUtil.mkdir(metaOutput);
         }
 
-        FileUtil.writeUtf8String(metajson, metaOutput + "meta.json");
-
+        FileUtil.writeUtf8String(metajson, metaOutput + File.separator + "meta.json");
     }
+
+
 }
