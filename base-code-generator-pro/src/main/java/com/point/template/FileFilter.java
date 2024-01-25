@@ -44,6 +44,7 @@ public class FileFilter {
         // 所有过滤器校验结束的结果
         boolean result = true;
 
+        // 过滤的条件为空，直接返回
         if (CollUtil.isEmpty(fileFilterConfigList)) {
             return true;
         }
@@ -53,6 +54,7 @@ public class FileFilter {
             String rule = fileFilterConfig.getRule();
             String value = fileFilterConfig.getValue();
 
+            // 根据范围过滤
             FileFilterRangeEnum fileFilterRangeEnum = FileFilterRangeEnum.getEnumByValue(range);
             if (fileFilterRangeEnum == null) {
                 continue;
@@ -70,6 +72,7 @@ public class FileFilter {
                 default:
             }
 
+            // 根据规则过滤
             FileFilterRuleEnum filterRuleEnum = FileFilterRuleEnum.getEnumByValue(rule);
             if (filterRuleEnum == null) {
                 continue;

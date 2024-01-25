@@ -232,7 +232,7 @@ public class Utils {
             List<Meta.FileConfigDTO.FilesDTO> newFileInfoList = new ArrayList<>(tempFileInfoList.stream()
                     .flatMap(fileInfo -> fileInfo.getFiles().stream())
                     .collect(
-                            Collectors.toMap(Meta.FileConfigDTO.FilesDTO::getInputPath, o -> o, (e, r) -> r)
+                            Collectors.toMap(Meta.FileConfigDTO.FilesDTO::getOutputPath, o -> o, (e, r) -> r)
                     ).values());
 
             // 使用新的 group 配置
@@ -250,7 +250,7 @@ public class Utils {
                 .collect(Collectors.toList());
         resultList.addAll(new ArrayList<>(noGroupFileInfoList.stream()
                 .collect(
-                        Collectors.toMap(Meta.FileConfigDTO.FilesDTO::getInputPath, o -> o, (e, r) -> r)
+                        Collectors.toMap(Meta.FileConfigDTO.FilesDTO::getOutputPath, o -> o, (e, r) -> r)
                 ).values()));
         return resultList;
     }
