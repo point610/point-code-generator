@@ -1,0 +1,25 @@
+{
+  "id": 1,
+  "meta": {
+    "name": "springboot-init-generator",
+    "description": "Spring Boot 模板项目生成器"
+  },
+  "originProjectPath": "E:/Java_Projection/point-code-generator/demo-project/springboot-init",
+  "fileConfig": {
+    "files": [
+      {
+        "path": "src/main/java/com/point/springbootinit"
+      }
+    ]
+  },
+  "modelConfig": {
+    "models": [
+      {
+        "fieldName": "className",
+        "type": "String",
+        "defaultValue": "true",
+        "replaceText": "a"
+      }
+    ]
+  }
+}
