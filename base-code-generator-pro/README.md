@@ -93,6 +93,17 @@
 - 模型分组
   ![img_6.png](img_6.png)
 
+### 对springboot init项目进行挖空
+
+- 使用配置信息生成meta.json文件
+- 
+
+
+
+
+
+
+
 ### 模板方法模式
 
 - 将代码抽象为多个顺序执行的流程，每个流程可以由一个方法实现
@@ -105,6 +116,10 @@
 - 这里模板类为 GenerateTemplate，为生成代码生成器的模板，有模板流程
 - 创建 GenerateCode 继承 GenerateTemplate，可以重写 GenerateTemplate 中的模板方法
 - 在main中使用的时 GenerateCode 的方法
+
+
+
+
 
 ### bug
 
