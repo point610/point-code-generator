@@ -13,10 +13,7 @@ import freemarker.template.TemplateException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utils {
@@ -204,6 +201,34 @@ public class Utils {
             sb.insert(0, " │   ");
         }
         return sb.toString();
+    }
+
+    /**
+     * 从未分组文件中移除组内的同名文件
+     *
+     * @param fileInfoList
+     * @return
+     */
+    public static List<Meta.FileConfigDTO.FilesDTO> removeGroupFilesFromRoot(List<Meta.FileConfigDTO.FilesDTO> fileInfoList) {
+        // 先获取到所有分组
+        List<Meta.FileConfigDTO.FilesDTO> groupFileInfoList = fileInfoList.stream()
+                .filter(fileInfo -> StrUtil.isNotBlank(fileInfo.getGroupKey()))
+                .collect(Collectors.toList());
+
+        // 获取所有分组内的文件列表
+        List<Meta.FileConfigDTO.FilesDTO> groupInnerFileInfoList = groupFileInfoList.stream()
+                .flatMap(fileInfo -> fileInfo.getFiles().stream())
+                .collect(Collectors.toList());
+
+        // 获取所有分组内文件输入路径集合
+        Set<String> fileInputPathSet = groupInnerFileInfoList.stream()
+                .map(Meta.FileConfigDTO.FilesDTO::getInputPath)
+                .collect(Collectors.toSet());
+
+        // 移除所有输入路径在 set 中的外层文件
+        return fileInfoList.stream()
+                .filter(fileInfo -> !fileInputPathSet.contains(fileInfo.getInputPath()))
+                .collect(Collectors.toList());
     }
 
     /**

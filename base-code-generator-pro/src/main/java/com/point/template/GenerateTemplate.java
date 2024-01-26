@@ -83,17 +83,21 @@ public class GenerateTemplate {
         String filePath;
         // java/com/point/model/NKWConfig.java.ftl
         filePath = "java/com/point/model/NKWConfig.java.ftl";
+        filePath = "java/com/point/model/DataModel.java.ftl";
         generateFile(inputPath, outputPath, filePath, meta);
 
-        // java/com/point/picocli/command/ConfigCommand.java.ftl
+        // java/com/point/picocli/mycommand/ConfigCommand.java.ftl
+        filePath = "java/com/point/picocli/mycommand/ConfigCommand.java.ftl";
         filePath = "java/com/point/picocli/command/ConfigCommand.java.ftl";
         generateFile(inputPath, outputPath, filePath, meta);
 
-        // java/com/point/picocli/command/GenerateCommand.java.ftl
+        // java/com/point/picocli/mycommand/GenerateCommand.java.ftl
+        filePath = "java/com/point/picocli/mycommand/GenerateCommand.java.ftl";
         filePath = "java/com/point/picocli/command/GenerateCommand.java.ftl";
         generateFile(inputPath, outputPath, filePath, meta);
 
-        // java/com/point/picocli/command/ListCommand.java.ftl
+        // java/com/point/picocli/mycommand/ListCommand.java.ftl
+        filePath = "java/com/point/picocli/mycommand/ListCommand.java.ftl";
         filePath = "java/com/point/picocli/command/ListCommand.java.ftl";
         generateFile(inputPath, outputPath, filePath, meta);
 
@@ -103,6 +107,18 @@ public class GenerateTemplate {
 
         // java/com/point/utils/Utils.java.ftl
         filePath = "java/com/point/utils/Utils.java.ftl";
+        generateFile(inputPath, outputPath, filePath, meta);
+
+        // java/com/point/picocli/generator/DynamicGenerator.java.ftl
+        filePath = "java/com/point/picocli/generator/DynamicGenerator.java.ftl";
+        generateFile(inputPath, outputPath, filePath, meta);
+
+        // java/com/point/picocli/generator/MainGenerator.java.ftl
+        filePath = "java/com/point/picocli/generator/MainGenerator.java.ftl";
+        generateFile(inputPath, outputPath, filePath, meta);
+
+        // java/com/point/picocli/generator/StaticGenerator.java.ftl
+        filePath = "java/com/point/picocli/generator/StaticGenerator.java.ftl";
         generateFile(inputPath, outputPath, filePath, meta);
 
         // java/com/point/Main.java.ftl

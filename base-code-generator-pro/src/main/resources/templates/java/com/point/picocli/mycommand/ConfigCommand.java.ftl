@@ -1,7 +1,7 @@
 package ${basePackage}.picocli.command;
 
 import cn.hutool.core.util.ReflectUtil;
-import ${basePackage}.model.DataModel;
+import ${basePackage}.model.NKWConfig;
 import picocli.CommandLine.Command;
 
 import java.lang.reflect.Field;
@@ -13,13 +13,12 @@ public class ConfigCommand implements Runnable {
         // 实现 config 命令的逻辑
         System.out.println("查看参数信息");
 
-        Field[] fields = ReflectUtil.getFields(DataModel.class);
+        // 获取类中的所有属性
+        Field[] fields = ReflectUtil.getFields(NKWConfig.class);
 
         // 遍历并打印每个字段的信息
         for (Field field : fields) {
-            System.out.println("字段名称：" + field.getName());
-            System.out.println("字段类型：" + field.getType());
-            System.out.println("---");
+            System.out.println(field.getType() + " -- " + field.getName());
         }
     }
 }

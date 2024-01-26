@@ -1,158 +1,82 @@
 package ${basePackage}.picocli.command;
 
 import cn.hutool.core.bean.BeanUtil;
-import ${basePackage}.model.NKWConfig;
-import ${basePackage}.utils.Utils;
+import ${basePackage}.generator.MainGenerator;
+import ${basePackage}.model.DataModel;
 import lombok.Data;
+import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-import picocli.CommandLine;
 
-import java.io.File;
 import java.util.concurrent.Callable;
+
+<#-- 生成选项 -->
+<#macro generateOption indent modelInfo>
+${indent}@Option(names = {<#if modelInfo.abbr??>"-${modelInfo.abbr}", </#if>"--${modelInfo.fieldName}"}, arity = "0..1", <#if modelInfo.description??>description = "${modelInfo.description}", </#if>interactive = true, echo = true)
+${indent}private ${modelInfo.type} ${modelInfo.fieldName}<#if modelInfo.defaultValue??> = ${modelInfo.defaultValue?c}</#if>;
+</#macro>
+
+<#-- 生成命令调用 -->
+<#macro generateCommand indent modelInfo>
+${indent}System.out.println("输入${modelInfo.groupName}配置：");
+${indent}CommandLine ${modelInfo.groupKey}CommandLine = new CommandLine(${modelInfo.type}Command.class);
+${indent}${modelInfo.groupKey}CommandLine.execute(${modelInfo.allArgsStr});
+</#macro>
 
 @Command(name = "generate", description = "生成代码", mixinStandardHelpOptions = true)
 @Data
-public class GenerateCommand implements Callable
-<Integer> {
+public class GenerateCommand implements Callable<Integer> {
+<#list modelConfig.models as modelInfo>
 
-    <#list modelConfig.models as modelInfo>
-        <#if modelInfo.groupKey??>
-            /**
-            * ${modelInfo.groupName}
-            */
-            static NKWConfig.${modelInfo.type} ${modelInfo.groupKey} = new NKWConfig.${modelInfo.type}();
-
-            @Command(name = "${modelInfo.groupKey}")
-            @Data
-            public static class ${modelInfo.type}Command implements Runnable {
-            <#list modelInfo.models as subModelInfo>
-                @Option(names = {<#if subModelInfo.abbr??>"-${subModelInfo.abbr}", </#if>"--${subModelInfo.fieldName}"}, arity = "0..1", <#if subModelInfo.description??>description = "${subModelInfo.description}", </#if>interactive = true, echo = true)
-                private ${subModelInfo.type} ${subModelInfo.fieldName}<#if subModelInfo.defaultValue??> = ${subModelInfo.defaultValue?c}</#if>;
-            </#list>
-
-            @Override
-            public void run() {
-            <#list modelInfo.models as subModelInfo>
-                ${modelInfo.groupKey}.${subModelInfo.fieldName} = ${subModelInfo.fieldName};
-            </#list>
-            }
-            }
-
-        <#else>
-            @Option(names = {<#if modelInfo.abbr??>"-${modelInfo.abbr}", </#if>"--${modelInfo.fieldName}"}, arity = "0..1", <#if modelInfo.description??>description = "${modelInfo.description}", </#if>interactive = true, echo = true)
-            private ${modelInfo.type} ${modelInfo.fieldName}<#if modelInfo.defaultValue??> = ${modelInfo.defaultValue?c}</#if>;
-        </#if>
-    </#list>
-
-    public Integer call() throws Exception {
-
-    // 将文件目录都复制到对应的位置
-    String fromDir = "${fileConfig.inputRootPath}";
-    String toDir ="${fileConfig.outputRootPath}";
-    File toDirPath = new File(toDir);
-    if (toDirPath.exists()) {
-    toDirPath.mkdirs();
-    }
-
-    System.out.println(fromDir);
-    System.out.println(toDir);
-    // Utils.copyStaticDir(fromDir, toDir);
-
-    // 替换动态的模板文件
-    String fromFile;
-    String toFile;
-
-
-    <#list modelConfig.models as modelInfo>
-        <#if modelInfo.groupKey??>
-            <#if modelInfo.condition??>
-                if (${modelInfo.condition}) {
-                CommandLine commandLine = new CommandLine(${modelInfo.type}Command.class);
-                commandLine.execute(${modelInfo.allArgsStr});
-                }
-            <#else>
-                CommandLine commandLine = new CommandLine(${modelInfo.type}Command.class);
-                commandLine.execute(${modelInfo.allArgsStr});
-            </#if>
-        </#if>
-    </#list>
-
-
-    // 生成配置文件
-    NKWConfig model = new NKWConfig();
-    BeanUtil.copyProperties(this, model);
-    <#list modelConfig.models as modelInfo>
-        <#if modelInfo.groupKey??>
-            model.${modelInfo.groupKey} = ${modelInfo.groupKey};
-        </#if>
-    </#list>
-    System.out.println("配置信息：" + model);
-    // Utils.doGenerate(fromFile, toFile, model);
-
-    <#-- 获取模型变量 -->
-    <#list modelConfig.models as modelInfo>
     <#-- 有分组 -->
-        <#if modelInfo.groupKey??>
+    <#if modelInfo.groupKey??>
+    /**
+     * ${modelInfo.groupName}
+     */
+    static DataModel.${modelInfo.type} ${modelInfo.groupKey} = new DataModel.${modelInfo.type}();
+
+    <#-- 根据分组生成命令类 -->
+    @Command(name = "${modelInfo.groupKey}")
+    @Data
+    public static class ${modelInfo.type}Command implements Runnable {
+    <#list modelInfo.models as subModelInfo>
+        <@generateOption indent="        " modelInfo=subModelInfo />
+    </#list>
+
+        @Override
+        public void run() {
             <#list modelInfo.models as subModelInfo>
-                ${subModelInfo.type} ${subModelInfo.fieldName} = model.${modelInfo.groupKey}.${subModelInfo.fieldName};
+            ${modelInfo.groupKey}.${subModelInfo.fieldName} = ${subModelInfo.fieldName};
             </#list>
-        <#else>
-            ${modelInfo.type} ${modelInfo.fieldName} = model.${modelInfo.fieldName};
-        </#if>
-    </#list>
-
-
-    <#list fileConfig.files as fileInfo>
-        <#if fileInfo.groupKey??>
-            <#if fileInfo.condition??>
-                if (${fileInfo.condition}){
-                <#list fileInfo.files as file>
-                    fromFile = new File(fromDir, "${file.inputPath}").getAbsolutePath();
-                    toFile = new File(toDir, "${file.outputPath}").getAbsolutePath();
-                    <#if file.generateType == "static">
-                        Utils.copyStaticFiles(fromFile, toFile);
-                    <#else>
-                        Utils.doGenerate(fromFile, toFile, model);
-                    </#if>
-                </#list>
-                }
-            <#else >
-                <#list fileInfo.files as file>
-                    fromFile = new File(fromDir, "${file.inputPath}").getAbsolutePath();
-                    toFile = new File(toDir, "${file.outputPath}").getAbsolutePath();
-                    <#if file.generateType == "static">
-                        Utils.copyStaticFiles(fromFile, toFile);
-                    <#else>
-                        Utils.doGenerate(fromFile, toFile, model);
-                    </#if>
-                </#list>
-            </#if>
-        <#else>
-            <#if fileInfo.condition??>
-                if (${fileInfo.condition}){
-                fromFile = new File(fromDir, "${fileInfo.inputPath}").getAbsolutePath();
-                toFile = new File(toDir, "${fileInfo.outputPath}").getAbsolutePath();
-                <#if fileInfo.generateType == "static">
-                    Utils.copyStaticFiles(fromFile, toFile);
-                <#else>
-                    Utils.doGenerate(fromFile, toFile, model);
-                </#if>
-                }
-            <#else>
-                fromFile = new File(fromDir, "${fileInfo.inputPath}").getAbsolutePath();
-                toFile = new File(toDir, "${fileInfo.outputPath}").getAbsolutePath();
-                <#if fileInfo.generateType == "static">
-                    Utils.copyStaticFiles(fromFile, toFile);
-                <#else>
-                    Utils.doGenerate(fromFile, toFile, model);
-                </#if>
-
-            </#if>
-        </#if>
-
-    </#list>
-
-    return 0;
+        }
     }
+    <#else>
+    <@generateOption indent="    " modelInfo=modelInfo />
+    </#if>
+</#list>
+
+    <#-- 生成调用方法 -->
+    public Integer call() throws Exception {
+        <#list modelConfig.models as modelInfo>
+        <#if modelInfo.groupKey??>
+        <#if modelInfo.condition??>
+        if (${modelInfo.condition}) {
+            <@generateCommand indent="            " modelInfo=modelInfo />
+        }
+        <#else>
+        <@generateCommand indent="      " modelInfo=modelInfo />
+        </#if>
+        </#if>
+        </#list>
+        <#-- 填充数据模型对象 -->
+        DataModel dataModel = new DataModel();
+        BeanUtil.copyProperties(this, dataModel);
+        <#list modelConfig.models as modelInfo>
+        <#if modelInfo.groupKey??>
+        dataModel.${modelInfo.groupKey} = ${modelInfo.groupKey};
+        </#if>
+        </#list>
+        MainGenerator.doGenerate(dataModel);
+        return 0;
     }
+}

@@ -1,6 +1,5 @@
 package ${basePackage};
 
-import ${basePackage}.model.NKWConfig;
 import ${basePackage}.picocli.CommandExecutor;
 import ${basePackage}.utils.Utils;
 import freemarker.template.TemplateException;

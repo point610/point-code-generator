@@ -77,7 +77,8 @@ public class TemplateMakerPro {
                 .stream()
                 .filter(File::isDirectory)
                 .findFirst()
-                .orElseThrow(RuntimeException::new).getAbsolutePath();
+                .orElseThrow(RuntimeException::new)
+                .getAbsolutePath();
         // 注意 win 系统需要对路径进行转义
         sourceRootPath = sourceRootPath.replaceAll("\\\\", "/");
 
@@ -123,13 +124,13 @@ public class TemplateMakerPro {
         }
 
         //// 2. 额外的输出配置
-        //if (templateMakerOutputConfig != null) {
-        //    // 文件外层和分组去重
-        //    if (templateMakerOutputConfig.isRemoveGroupFilesFromRoot()) {
-        //        List<Meta.FileConfigDTO.FilesDTO> fileInfoList = newMeta.getFileConfig().getFiles();
-        //        newMeta.getFileConfig().setFiles(TemplateMakerUtils.removeGroupFilesFromRoot(fileInfoList));
-        //    }
-        //}
+        if (templateMakerOutputConfig != null) {
+            // 文件外层和分组去重
+            if (templateMakerOutputConfig.isRemoveGroupFilesFromRoot()) {
+                List<Meta.FileConfigDTO.FilesDTO> fileInfoList = newMeta.getFileConfig().getFiles();
+                newMeta.getFileConfig().setFiles(Utils.removeGroupFilesFromRoot(fileInfoList));
+            }
+        }
 
 
         // 2. 输出元信息文件
