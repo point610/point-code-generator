@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.point</groupId>
-    <artifactId>springboot-init</artifactId>
+    <artifactId>point-code-generator-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>springboot-init</name>
     <properties>

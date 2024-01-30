@@ -10,22 +10,11 @@ import com.point.springbootinit.config.WxOpenConfig;
 import com.point.springbootinit.constant.UserConstant;
 import com.point.springbootinit.exception.BusinessException;
 import com.point.springbootinit.exception.ThrowUtils;
-import com.point.springbootinit.model.dto.user.UserAddRequest;
-import com.point.springbootinit.model.dto.user.UserLoginRequest;
-import com.point.springbootinit.model.dto.user.UserQueryRequest;
-import com.point.springbootinit.model.dto.user.UserRegisterRequest;
-import com.point.springbootinit.model.dto.user.UserUpdateMyRequest;
-import com.point.springbootinit.model.dto.user.UserUpdateRequest;
+import com.point.springbootinit.model.dto.user.*;
 import com.point.springbootinit.model.entity.User;
 import com.point.springbootinit.model.vo.LoginUserVO;
 import com.point.springbootinit.model.vo.UserVO;
 import com.point.springbootinit.service.UserService;
-
-import java.util.List;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import me.chanjar.weixin.common.bean.oauth2.WxOAuth2AccessToken;
@@ -33,12 +22,12 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 import static com.point.springbootinit.service.impl.UserServiceImpl.SALT;
 
@@ -173,6 +162,9 @@ public class UserController {
         String defaultPassword = "12345678";
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + defaultPassword).getBytes());
         user.setUserPassword(encryptPassword);
+
+        user.setUserAvatar("https://tucdn.wpon.cn/2024/01/30/e5292df8ae1c0.png");
+
         boolean result = userService.save(user);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         return ResultUtils.success(user.getId());
