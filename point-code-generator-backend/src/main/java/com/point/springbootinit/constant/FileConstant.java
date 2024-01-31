@@ -7,7 +7,6 @@ public interface FileConstant {
 
     /**
      * COS 访问地址
-     * todo 需替换配置
      */
-    String COS_HOST = "";
+    String COS_HOST = "https://code-generator-1310359991.cos.ap-guangzhou.myqcloud.com";
 }

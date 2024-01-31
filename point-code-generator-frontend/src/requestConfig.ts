@@ -1,6 +1,6 @@
-﻿import { BACKEND_HOST_LOCAL, BACKEND_HOST_PROD } from '@/constants';
-import type { RequestOptions } from '@@/plugin-request/request';
-import type { RequestConfig } from '@umijs/max';
+﻿import {BACKEND_HOST_LOCAL, BACKEND_HOST_PROD} from '@/constants';
+import type {RequestOptions} from '@@/plugin-request/request';
+import type {RequestConfig} from '@umijs/max';
 
 // 与后端约定的响应数据格式
 interface ResponseStructure {
@@ -36,7 +36,7 @@ export const requestConfig: RequestConfig = {
       const requestPath: string = response.config.url ?? '';
 
       // 响应
-      const { data } = response as unknown as ResponseStructure;
+      const {data} = response as unknown as ResponseStructure;
       if (!data) {
         throw new Error('服务异常');
       }
@@ -54,7 +54,7 @@ export const requestConfig: RequestConfig = {
         throw new Error('请先登录');
       }
 
-      if (code !== 0) {
+      if (code !== undefined && code !== 0) {
         throw new Error(data.message ?? '服务器错误');
       }
       return response;

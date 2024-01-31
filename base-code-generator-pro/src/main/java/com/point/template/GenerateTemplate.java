@@ -1,6 +1,8 @@
 package com.point.template;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ClassPathResource;
+import cn.hutool.core.util.ZipUtil;
 import com.point.meta.Meta;
 import com.point.meta.MetaManager;
 import com.point.utils.Utils;
@@ -38,6 +40,8 @@ public class GenerateTemplate {
         // 代码空间优化
         //SimplifyPoject(projectOutputPath, jarName);
 
+        // 5、生成精简版的程序（产物包）
+        buildDist(projectPath + File.separator + ".generated" + File.separator + meta.getName(), projectOutputPath, projectOutputPath + "/target" + File.separator + jarName, projectOutputPath);
     }
 
     protected String generateScript(Meta meta, String projectOutputPath) throws IOException {
@@ -131,11 +135,45 @@ public class GenerateTemplate {
     }
 
     protected void copySourceCode(Meta meta, String projectPath) {
-        Utils.copyStaticDir(meta.getFileConfig().getSourceRootPath(),
-                projectPath + File.separator + ".generated" + File.separator + meta.getName() + File.separator + new File(meta.getFileConfig().getInputRootPath()).getParent());
+        Utils.copyStaticDir(meta.getFileConfig().getSourceRootPath(), projectPath + File.separator + ".generated" + File.separator + meta.getName() + File.separator + new File(meta.getFileConfig().getInputRootPath()).getParent());
     }
 
     private void generateFile(String inputPath, String outputPath, String filePath, Meta meta) throws TemplateException, IOException {
         Utils.doGenerate(inputPath + filePath, outputPath + filePath.substring(0, filePath.length() - 4), meta);
+    }
+
+    /**
+     * 生成精简版程序
+     *
+     * @param outputPath
+     * @param sourceCopyDestPath
+     * @param jarPath
+     * @param shellOutputFilePath
+     * @return 产物包路径
+     */
+    protected String buildDist(String outputPath, String sourceCopyDestPath, String jarPath, String shellOutputFilePath) {
+        String distOutputPath = outputPath + "-dist";
+        // 拷贝 jar 包
+        String targetAbsolutePath = distOutputPath + File.separator + "target";
+        FileUtil.mkdir(targetAbsolutePath);
+        String jarAbsolutePath = jarPath;
+        FileUtil.copy(jarAbsolutePath, targetAbsolutePath, true);
+        // 拷贝脚本文件
+        FileUtil.copy(shellOutputFilePath, distOutputPath, true);
+        // 拷贝源模板文件
+        FileUtil.copy(sourceCopyDestPath, distOutputPath, true);
+        return distOutputPath;
+    }
+
+    /**
+     * 制作压缩包
+     *
+     * @param outputPath
+     * @return 压缩包路径
+     */
+    protected String buildZip(String outputPath) {
+        String zipPath = outputPath + ".zip";
+        ZipUtil.zip(outputPath, zipPath);
+        return zipPath;
     }
 }
