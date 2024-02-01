@@ -1,8 +1,9 @@
-package ${basePackage}.picocli;
+package ${basePackage}.cli;
 
-import ${basePackage}.picocli.command.ConfigCommand;
-import ${basePackage}.picocli.command.GenerateCommand;
-import ${basePackage}.picocli.command.ListCommand;
+import ${basePackage}.cli.command.GenerateCommand;
+import ${basePackage}.cli.command.JsonGenerateCommand;
+import ${basePackage}.cli.command.ListCommand;
+import ${basePackage}.cli.command.ConfigCommand;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
