@@ -109,17 +109,17 @@ declare namespace API {
     id?: number;
   };
 
-  type FileConfigDTO = {
-    files?: FilesDTO[];
+  type FileConfig = {
+    files?: FileInfo[];
     inputRootPath?: string;
     outputRootPath?: string;
     sourceRootPath?: string;
     type?: string;
   };
 
-  type FilesDTO = {
+  type FileInfo = {
     condition?: string;
-    files?: FilesDTO[];
+    files?: FileInfo[];
     generateType?: string;
     groupKey?: string;
     groupName?: string;
@@ -152,8 +152,8 @@ declare namespace API {
     basePackage?: string;
     description?: string;
     distPath?: string;
-    fileConfig?: FileConfigDTO;
-    modelConfig?: ModelConfigDTO;
+    fileConfig?: FileConfig;
+    modelConfig?: ModelConfig;
     name?: string;
     picture?: string;
     status?: number;
@@ -166,13 +166,18 @@ declare namespace API {
     basePackage?: string;
     description?: string;
     distPath?: string;
-    fileConfig?: FileConfigDTO;
+    fileConfig?: FileConfig;
     id?: number;
-    modelConfig?: ModelConfigDTO;
+    modelConfig?: ModelConfig;
     name?: string;
     picture?: string;
     tags?: string[];
     version?: string;
+  };
+
+  type GeneratorMakeRequest = {
+    meta?: Meta;
+    zipFilePath?: string;
   };
 
   type GeneratorQueryRequest = {
@@ -200,9 +205,9 @@ declare namespace API {
     basePackage?: string;
     description?: string;
     distPath?: string;
-    fileConfig?: FileConfigDTO;
+    fileConfig?: FileConfig;
     id?: number;
-    modelConfig?: ModelConfigDTO;
+    modelConfig?: ModelConfig;
     name?: string;
     picture?: string;
     status?: number;
@@ -221,9 +226,9 @@ declare namespace API {
     createTime?: string;
     description?: string;
     distPath?: string;
-    fileConfig?: FileConfigDTO;
+    fileConfig?: FileConfig;
     id?: number;
-    modelConfig?: ModelConfigDTO;
+    modelConfig?: ModelConfig;
     name?: string;
     picture?: string;
     status?: number;
@@ -264,11 +269,22 @@ declare namespace API {
     userRole?: string;
   };
 
-  type ModelConfigDTO = {
-    models?: ModelsDTO[];
+  type Meta = {
+    author?: string;
+    basePackage?: string;
+    createTime?: string;
+    description?: string;
+    fileConfig?: FileConfig;
+    modelConfig?: ModelConfig;
+    name?: string;
+    version?: string;
   };
 
-  type ModelsDTO = {
+  type ModelConfig = {
+    models?: ModelInfo[];
+  };
+
+  type ModelInfo = {
     abbr?: string;
     allArgsStr?: string;
     condition?: string;
@@ -277,7 +293,7 @@ declare namespace API {
     fieldName?: string;
     groupKey?: string;
     groupName?: string;
-    models?: ModelsDTO[];
+    models?: ModelInfo[];
     type?: string;
   };
 

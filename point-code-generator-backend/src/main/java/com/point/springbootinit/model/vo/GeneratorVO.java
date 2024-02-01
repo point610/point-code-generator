@@ -1,7 +1,7 @@
 package com.point.springbootinit.model.vo;
 
 import cn.hutool.json.JSONUtil;
-import com.point.springbootinit.meta.Meta;
+import com.point.maker.meta.Meta;
 import com.point.springbootinit.model.entity.Generator;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
@@ -59,12 +59,12 @@ public class GeneratorVO implements Serializable {
     /**
      * 文件配置（json字符串）
      */
-    private Meta.FileConfigDTO fileConfig;
+    private Meta.FileConfig fileConfig;
 
     /**
      * 模型配置（json字符串）
      */
-    private Meta.ModelConfigDTO modelConfig;
+    private Meta.ModelConfig modelConfig;
 
     /**
      * 代码生成器产物路径
@@ -112,9 +112,9 @@ public class GeneratorVO implements Serializable {
         BeanUtils.copyProperties(generatorVO, generator);
         List<String> tagList = generatorVO.getTags();
         generator.setTags(JSONUtil.toJsonStr(tagList));
-        Meta.FileConfigDTO fileConfig = generatorVO.getFileConfig();
+        Meta.FileConfig fileConfig = generatorVO.getFileConfig();
         generator.setFileConfig(JSONUtil.toJsonStr(fileConfig));
-        Meta.ModelConfigDTO modelConfig = generatorVO.getModelConfig();
+        Meta.ModelConfig modelConfig = generatorVO.getModelConfig();
         generator.setModelConfig(JSONUtil.toJsonStr(modelConfig));
         return generator;
     }
@@ -132,8 +132,8 @@ public class GeneratorVO implements Serializable {
         GeneratorVO generatorVO = new GeneratorVO();
         BeanUtils.copyProperties(generator, generatorVO);
         generatorVO.setTags(JSONUtil.toList(generator.getTags(), String.class));
-        generatorVO.setFileConfig(JSONUtil.toBean(generator.getFileConfig(), Meta.FileConfigDTO.class));
-        generatorVO.setModelConfig(JSONUtil.toBean(generator.getModelConfig(), Meta.ModelConfigDTO.class));
+        generatorVO.setFileConfig(JSONUtil.toBean(generator.getFileConfig(), Meta.FileConfig.class));
+        generatorVO.setModelConfig(JSONUtil.toBean(generator.getModelConfig(), Meta.ModelConfig.class));
         return generatorVO;
     }
 }

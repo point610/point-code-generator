@@ -1,10 +1,16 @@
 package com.point.springbootinit.controller;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.point.maker.generator.main.GenerateTemplate;
+import com.point.maker.generator.main.ZipGenerator;
+import com.point.maker.meta.Meta;
+import com.point.maker.meta.MetaValidator;
 import com.point.springbootinit.annotation.AuthCheck;
 import com.point.springbootinit.common.BaseResponse;
 import com.point.springbootinit.common.DeleteRequest;
@@ -14,7 +20,6 @@ import com.point.springbootinit.constant.UserConstant;
 import com.point.springbootinit.exception.BusinessException;
 import com.point.springbootinit.exception.ThrowUtils;
 import com.point.springbootinit.manager.CosManager;
-import com.point.springbootinit.meta.Meta;
 import com.point.springbootinit.model.dto.generator.*;
 import com.point.springbootinit.model.entity.Generator;
 import com.point.springbootinit.model.entity.User;
@@ -33,6 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.List;
@@ -75,9 +81,9 @@ public class GeneratorController {
         BeanUtils.copyProperties(generatorAddRequest, generator);
         List<String> tags = generatorAddRequest.getTags();
         generator.setTags(JSONUtil.toJsonStr(tags));
-        Meta.FileConfigDTO fileConfig = generatorAddRequest.getFileConfig();
+        Meta.FileConfig fileConfig = generatorAddRequest.getFileConfig();
         generator.setFileConfig(JSONUtil.toJsonStr(fileConfig));
-        Meta.ModelConfigDTO modelConfig = generatorAddRequest.getModelConfig();
+        Meta.ModelConfig modelConfig = generatorAddRequest.getModelConfig();
         generator.setModelConfig(JSONUtil.toJsonStr(modelConfig));
 
         // 参数校验
@@ -132,9 +138,9 @@ public class GeneratorController {
         BeanUtils.copyProperties(generatorUpdateRequest, generator);
         List<String> tags = generatorUpdateRequest.getTags();
         generator.setTags(JSONUtil.toJsonStr(tags));
-        Meta.FileConfigDTO fileConfig = generatorUpdateRequest.getFileConfig();
+        Meta.FileConfig fileConfig = generatorUpdateRequest.getFileConfig();
         generator.setFileConfig(JSONUtil.toJsonStr(fileConfig));
-        Meta.ModelConfigDTO modelConfig = generatorUpdateRequest.getModelConfig();
+        Meta.ModelConfig modelConfig = generatorUpdateRequest.getModelConfig();
         generator.setModelConfig(JSONUtil.toJsonStr(modelConfig));
 
         // 参数校验
@@ -237,9 +243,9 @@ public class GeneratorController {
         BeanUtils.copyProperties(generatorEditRequest, generator);
         List<String> tags = generatorEditRequest.getTags();
         generator.setTags(JSONUtil.toJsonStr(tags));
-        Meta.FileConfigDTO fileConfig = generatorEditRequest.getFileConfig();
+        Meta.FileConfig fileConfig = generatorEditRequest.getFileConfig();
         generator.setFileConfig(JSONUtil.toJsonStr(fileConfig));
-        Meta.ModelConfigDTO modelConfig = generatorEditRequest.getModelConfig();
+        Meta.ModelConfig modelConfig = generatorEditRequest.getModelConfig();
         generator.setModelConfig(JSONUtil.toJsonStr(modelConfig));
 
         // 参数校验
@@ -416,6 +422,77 @@ public class GeneratorController {
         Files.copy(resultFile.toPath(), response.getOutputStream());
 
         // 清理文件
+        CompletableFuture.runAsync(() -> {
+            FileUtil.del(tempDirPath);
+        });
+    }
+
+    /**
+     * 制作代码生成器
+     *
+     * @param generatorMakeRequest
+     * @param request
+     * @param response
+     * @return
+     */
+    @PostMapping("/make")
+    public void makeGenerator(@RequestBody GeneratorMakeRequest generatorMakeRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // 1) 输入参数
+        Meta meta = generatorMakeRequest.getMeta();
+        String zipFilePath = generatorMakeRequest.getZipFilePath();
+
+        // 需要用户登录
+        User loginUser = userService.getLoginUser(request);
+        log.info("userId = {} 在线制作生成器", loginUser.getId());
+
+        // 2) 创建独立的工作空间，下载压缩包到本地
+        String projectPath = System.getProperty("user.dir");
+        String id = IdUtil.getSnowflakeNextId() + RandomUtil.randomString(6);
+        String tempDirPath = String.format("%s/.temp/make/%s", projectPath, id);
+        String localZipFilePath = tempDirPath + "/project.zip";
+
+        if (!FileUtil.exist(localZipFilePath)) {
+            FileUtil.touch(localZipFilePath);
+        }
+
+        // 下载文件
+        try {
+            cosManager.download(zipFilePath, localZipFilePath);
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "压缩包下载失败");
+        }
+
+        // 3）解压，得到项目模板文件
+        File unzipDistDir = ZipUtil.unzip(localZipFilePath);
+
+        // 4）构造 meta 对象和生成器的输出路径
+        String sourceRootPath = unzipDistDir.getAbsolutePath();
+        meta.getFileConfig().setSourceRootPath(sourceRootPath);
+        // 校验和处理默认值
+        MetaValidator.doValidAndFill(meta);
+        String outputPath = tempDirPath + "/generated/" +meta.getName() ;
+
+        // 5）调用 maker 方法制作生成器
+        GenerateTemplate generateTemplate = new ZipGenerator();
+        try {
+            generateTemplate.doGenerate(meta, outputPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "制作失败");
+        }
+
+        // 6）下载制作好的生成器压缩包
+        String suffix = "-dist.zip";
+        String zipFileName = meta.getName() + suffix;
+        // 生成器压缩包的绝对路径
+        String distZipFilePath = outputPath + suffix;
+
+        // 设置响应头
+        response.setContentType("application/octet-stream;charset=UTF-8");
+        response.setHeader("Content-Disposition", "attachment; filename=" + zipFileName);
+        Files.copy(Paths.get(distZipFilePath), response.getOutputStream());
+
+        // 7）清理工作空间的文件
         CompletableFuture.runAsync(() -> {
             FileUtil.del(tempDirPath);
         });

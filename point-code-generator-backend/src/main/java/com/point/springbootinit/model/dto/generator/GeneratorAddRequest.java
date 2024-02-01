@@ -1,6 +1,6 @@
 package com.point.springbootinit.model.dto.generator;
 
-import com.point.springbootinit.meta.Meta;
+import com.point.maker.meta.Meta;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -50,12 +50,12 @@ public class GeneratorAddRequest implements Serializable {
     /**
      * 文件配置（json字符串）
      */
-    private Meta.FileConfigDTO fileConfig;
+    private Meta.FileConfig fileConfig;
 
     /**
      * 模型配置（json字符串）
      */
-    private Meta.ModelConfigDTO modelConfig;
+    private Meta.ModelConfig modelConfig;
 
     /**
      * 代码生成器产物路径

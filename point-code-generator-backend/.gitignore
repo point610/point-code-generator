@@ -3,6 +3,7 @@ src/main/resources/application-local.yml
 
 HELP.md
 target/
+.temp
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
