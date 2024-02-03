@@ -71,7 +71,7 @@
           {
             "fieldName": "outputText",
             "type": "String",
-            "description": "输出信息",
+              "description": "输出信息",
             "defaultValue": "sum = ",
             "abbr": "o"
           }
