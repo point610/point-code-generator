@@ -21,6 +21,7 @@ import com.point.springbootinit.common.ResultUtils;
 import com.point.springbootinit.constant.UserConstant;
 import com.point.springbootinit.exception.BusinessException;
 import com.point.springbootinit.exception.ThrowUtils;
+import com.point.springbootinit.manager.CacheManager;
 import com.point.springbootinit.manager.CosManager;
 import com.point.springbootinit.model.dto.generator.*;
 import com.point.springbootinit.model.entity.Generator;
@@ -65,6 +66,9 @@ public class GeneratorController {
 
     @Resource
     private CosManager cosManager;
+
+    @Resource
+    private CacheManager cacheManager;
 
     // region 增删改查
 
@@ -396,12 +400,7 @@ public class GeneratorController {
         // 执行脚本
         // 找到脚本文件所在路径
         // 要注意，如果不是 windows 系统，找 generator 文件而不是 bat
-        File scriptFile = FileUtil.loopFiles(unzipDistDir, 2, null)
-                .stream()
-                .filter(file -> file.isFile()
-                        && "generator.bat".equals(file.getName()))
-                .findFirst()
-                .orElseThrow(RuntimeException::new);
+        File scriptFile = FileUtil.loopFiles(unzipDistDir, 2, null).stream().filter(file -> file.isFile() && "generator.bat".equals(file.getName())).findFirst().orElseThrow(RuntimeException::new);
 
         // 添加可执行权限
         try {
@@ -603,16 +602,23 @@ public class GeneratorController {
      * @param request
      * @return
      */
-    @PostMapping("/list/page/vo/fast")//    /api/generator/list/page/vo/fast
+    @PostMapping("/list/page/vo/fast")
+    //    /api/generator/list/page/vo/fast
     //  {"current":1,"pageSize":12,"sortField":"createTime","sortOrder":"descend"}
     //   \"code\":0
     public BaseResponse<Page<GeneratorVO>> listGeneratorVOByPageFast(@RequestBody GeneratorQueryRequest generatorQueryRequest,
                                                                      HttpServletRequest request) {
         long current = generatorQueryRequest.getCurrent();
         long size = generatorQueryRequest.getPageSize();
+        // 优先从缓存读取
+        String cacheKey = getPageCacheKey(generatorQueryRequest);
+        Object cacheValue = cacheManager.get(cacheKey);
+        if (cacheValue != null) {
+            return ResultUtils.success((Page<GeneratorVO>) cacheValue);
+        }
 
         // 限制爬虫
-        //ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
+        ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
         QueryWrapper<Generator> queryWrapper = generatorService.getQueryWrapper(generatorQueryRequest);
         queryWrapper.select("id",
                 "name",
@@ -626,8 +632,9 @@ public class GeneratorController {
         );
         Page<Generator> generatorPage = generatorService.page(new Page<>(current, size), queryWrapper);
         Page<GeneratorVO> generatorVOPage = generatorService.getGeneratorVOPage(generatorPage, request);
-
         // 写入缓存
+        cacheManager.put(cacheKey, generatorVOPage);
         return ResultUtils.success(generatorVOPage);
     }
+
 }
