@@ -1,8 +1,7 @@
-import { uploadFileUsingPost } from '@/services/backend/fileController';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { message, Upload, UploadProps } from 'antd';
-import React, { useState } from 'react';
-import {COS_HOST} from "@/constants";
+import {LoadingOutlined, PlusOutlined} from '@ant-design/icons';
+import {message, Upload, UploadProps} from 'antd';
+import React, {useState} from 'react';
+import {uploadImgUsingPost} from "@/services/backend/imgController";
 
 interface Props {
   biz: string;
@@ -15,7 +14,7 @@ interface Props {
  * @constructor
  */
 const PictureUploader: React.FC<Props> = (props) => {
-  const { biz, value, onChange } = props;
+  const {biz, value, onChange} = props;
   const [loading, setLoading] = useState(false);
 
   const uploadProps: UploadProps = {
@@ -27,7 +26,7 @@ const PictureUploader: React.FC<Props> = (props) => {
     customRequest: async (fileObj: any) => {
       setLoading(true);
       try {
-        const res = await uploadFileUsingPost(
+        const res = await uploadImgUsingPost(
           {
             biz,
           },
@@ -35,7 +34,8 @@ const PictureUploader: React.FC<Props> = (props) => {
           fileObj.file,
         );
         // 拼接完整图片路径
-        const fullPath = COS_HOST + res.data;
+        // const fullPath = COS_HOST + res.data;
+        const fullPath = res.data;
         onChange?.(fullPath ?? '');
         fileObj.onSuccess(fullPath);
       } catch (e: any) {
@@ -48,14 +48,14 @@ const PictureUploader: React.FC<Props> = (props) => {
 
   const uploadButton = (
     <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>上传</div>
+      {loading ? <LoadingOutlined/> : <PlusOutlined/>}
+      <div style={{marginTop: 8}}>上传</div>
     </div>
   );
 
   return (
     <Upload {...uploadProps}>
-      {value ? <img src={value} alt="picture" style={{ width: '100%' }} /> : uploadButton}
+      {value ? <img src={value} alt="picture" style={{width: '100%'}}/> : uploadButton}
     </Upload>
   );
 };

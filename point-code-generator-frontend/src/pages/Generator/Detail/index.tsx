@@ -111,7 +111,7 @@ const GeneratorDetailPage: React.FC = () => {
             </Space>
             <Typography.Paragraph>{data.description}</Typography.Paragraph>
             <Typography.Paragraph type="secondary">
-              创建时间：{moment(data.createTime).format('YYYY-MM-DD hh:mm:ss')}
+              创建时间：{moment(data.createTime).format('YYYY-MM-DD HH:mm:ss')}
             </Typography.Paragraph>
             <Typography.Paragraph type="secondary">基础包：{data.basePackage}</Typography.Paragraph>
             <Typography.Paragraph type="secondary">版本：{data.version}</Typography.Paragraph>

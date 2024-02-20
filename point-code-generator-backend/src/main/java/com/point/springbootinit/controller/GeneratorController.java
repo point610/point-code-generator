@@ -50,6 +50,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+import static com.point.springbootinit.constant.RedisConstant.GENERATOR_PAGE_PREFIX;
+
 /**
  * 帖子接口
  */
@@ -101,6 +103,10 @@ public class GeneratorController {
         boolean result = generatorService.save(generator);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         long newGeneratorId = generator.getId();
+
+        // 删除缓存
+        cacheManager.deleteAll();
+
         return ResultUtils.success(newGeneratorId);
     }
 
@@ -126,6 +132,10 @@ public class GeneratorController {
             throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
         }
         boolean b = generatorService.removeById(id);
+
+        // 删除缓存
+        cacheManager.deleteAll();
+
         return ResultUtils.success(b);
     }
 
@@ -157,6 +167,10 @@ public class GeneratorController {
         Generator oldGenerator = generatorService.getById(id);
         ThrowUtils.throwIf(oldGenerator == null, ErrorCode.NOT_FOUND_ERROR);
         boolean result = generatorService.updateById(generator);
+
+        // 删除缓存
+        cacheManager.deleteAll();
+
         return ResultUtils.success(result);
     }
 
@@ -400,7 +414,9 @@ public class GeneratorController {
         // 执行脚本
         // 找到脚本文件所在路径
         // 要注意，如果不是 windows 系统，找 generator 文件而不是 bat
-        File scriptFile = FileUtil.loopFiles(unzipDistDir, 2, null).stream().filter(file -> file.isFile() && "generator.bat".equals(file.getName())).findFirst().orElseThrow(RuntimeException::new);
+        File scriptFile = FileUtil.loopFiles(unzipDistDir, 2, null).stream()
+                .filter(file -> file.isFile() && "generator.bat".equals(file.getName()))
+                .findFirst().orElseThrow(RuntimeException::new);
 
         // 添加可执行权限
         try {
@@ -441,6 +457,23 @@ public class GeneratorController {
         } catch (Exception e) {
             e.printStackTrace();
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "执行生成器脚本错误");
+        }
+
+        // 修改 basePackage
+        if (dataModel.containsKey("basePackage")) {
+            //\generated\src\main\java\com\point
+            String srcBasePackagePath = unzipDistDir + "/generated/src/main/java/com/point";
+            String destBasePackagePath = unzipDistDir + "/generated/src/main/java/";
+
+            String[] split = dataModel.get("basePackage").toString().split("\\.");
+            StringBuilder destBasePackagePathTemp = new StringBuilder();
+            for (String partPath : split) {
+                destBasePackagePathTemp.append(partPath);
+                destBasePackagePathTemp.append("/");
+            }
+            destBasePackagePath = destBasePackagePath + destBasePackagePathTemp;
+            FileUtil.copyContent(new File(srcBasePackagePath), new File(destBasePackagePath), true);
+            FileUtil.del(srcBasePackagePath);
         }
 
         // 压缩得到的生成结果，返回给前端
@@ -591,7 +624,7 @@ public class GeneratorController {
         String jsonStr = JSONUtil.toJsonStr(generatorQueryRequest);
         // 请求参数编码
         String base64 = Base64Encoder.encode(jsonStr);
-        String key = "generator:page:" + base64;
+        String key = GENERATOR_PAGE_PREFIX + base64;
         return key;
     }
 
@@ -606,8 +639,7 @@ public class GeneratorController {
     //    /api/generator/list/page/vo/fast
     //  {"current":1,"pageSize":12,"sortField":"createTime","sortOrder":"descend"}
     //   \"code\":0
-    public BaseResponse<Page<GeneratorVO>> listGeneratorVOByPageFast(@RequestBody GeneratorQueryRequest generatorQueryRequest,
-                                                                     HttpServletRequest request) {
+    public BaseResponse<Page<GeneratorVO>> listGeneratorVOByPageFast(@RequestBody GeneratorQueryRequest generatorQueryRequest, HttpServletRequest request) {
         long current = generatorQueryRequest.getCurrent();
         long size = generatorQueryRequest.getPageSize();
         // 优先从缓存读取
@@ -620,16 +652,7 @@ public class GeneratorController {
         // 限制爬虫
         ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
         QueryWrapper<Generator> queryWrapper = generatorService.getQueryWrapper(generatorQueryRequest);
-        queryWrapper.select("id",
-                "name",
-                "description",
-                "tags",
-                "picture",
-                "status",
-                "userId",
-                "createTime",
-                "updateTime"
-        );
+        queryWrapper.select("id", "name", "description", "tags", "picture", "status", "userId", "createTime", "updateTime");
         Page<Generator> generatorPage = generatorService.page(new Page<>(current, size), queryWrapper);
         Page<GeneratorVO> generatorVOPage = generatorService.getGeneratorVOPage(generatorPage, request);
         // 写入缓存

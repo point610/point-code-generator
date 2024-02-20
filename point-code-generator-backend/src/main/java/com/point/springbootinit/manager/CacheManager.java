@@ -2,10 +2,13 @@ package com.point.springbootinit.manager;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.point.springbootinit.constant.RedisConstant;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.nio.charset.StandardCharsets;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -33,7 +36,8 @@ public class CacheManager {
      */
     public void put(String key, Object value) {
         localCache.put(key, value);
-        redisTemplate.opsForValue().set(key, value, 100, TimeUnit.MINUTES);
+        String encodedKey = new String(key.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+        redisTemplate.opsForValue().set(encodedKey, value, 100, TimeUnit.MINUTES);
     }
 
     /**
@@ -69,4 +73,15 @@ public class CacheManager {
         redisTemplate.delete(key);
     }
 
+    /**
+     * 清空缓存
+     */
+    public void deleteAll() {
+        localCache.invalidateAll();
+
+        Set<String> keys = redisTemplate.keys(RedisConstant.GENERATOR_PAGE_PREFIX + "*");
+        if (keys != null) {
+            redisTemplate.delete(keys);
+        }
+    }
 }

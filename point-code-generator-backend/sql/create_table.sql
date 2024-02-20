@@ -161,3 +161,7 @@ SELECT id,name,description,basePackage,version,author,tags,picture,distPath,stat
 SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
 SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
 SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
+
+use code_generator_db;
+
+delete from generator where id>6;

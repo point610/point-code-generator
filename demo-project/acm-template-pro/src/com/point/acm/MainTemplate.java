@@ -31,4 +31,10 @@ public class MainTemplate {
 
         scanner.close();
     }
+
+    private static void printList(int[] arr) {
+        for (int ii : arr) {
+            System.out.print(ii + ' ');
+        }
+    }
 }

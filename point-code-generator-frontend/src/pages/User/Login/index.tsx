@@ -66,8 +66,8 @@ const Login: React.FC = () => {
             maxWidth: '75vw',
           }}
           logo={<img alt="logo" style={{ height: '100%' }} src="/logo.png" />}
-          title="前端万用模板"
-          subTitle={'前端万用模板，大幅提升开发效率'}
+          title="point-code-generator"
+          subTitle={'point-code-generator'}
           initialValues={{
             autoLogin: true,
           }}

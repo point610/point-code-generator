@@ -474,6 +474,10 @@ declare namespace API {
     biz?: string;
   };
 
+  type uploadImgUsingPOSTParams = {
+    biz?: string;
+  };
+
   type User = {
     createTime?: string;
     id?: number;

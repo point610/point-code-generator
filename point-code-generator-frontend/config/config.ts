@@ -73,7 +73,7 @@ export default defineConfig({
    * @name layout 插件
    * @doc https://umijs.org/docs/max/layout-menu
    */
-  title: '前端万用模板',
+  title: 'point-code-generator',
   layout: {
     locale: true,
     ...defaultSettings,

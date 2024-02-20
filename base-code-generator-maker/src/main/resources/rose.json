@@ -1,0 +1,55 @@
+{
+  "name": "Rose",
+  "description": "生成玫瑰的前端页面",
+  "fileConfig": {
+    "sourceRootPath": "E:/Java_Projection/point-code-generator/demo-project/rose",
+    "files": [
+      {
+        "inputPath": "index.html.ftl",
+        "outputPath": "index.html",
+        "type": "file",
+        "generateType": "dynamic"
+      },
+      {
+        "inputPath": "src/css/style.css",
+        "outputPath": "src/css/style.css",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "src/img/effect.png",
+        "outputPath": "src/img/effect.png",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "src/main.js",
+        "outputPath": "src/main.js",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": ".DS_Store",
+        "outputPath": ".DS_Store",
+        "type": "file",
+        "generateType": "static"
+      }
+    ]
+  },
+  "modelConfig": {
+    "models": [
+      {
+        "fieldName": "toUser",
+        "type": "String",
+        "description": "祝福送给的对象",
+        "defaultValue": "point"
+      },
+      {
+        "fieldName": "wishWord",
+        "type": "String",
+        "description": "祝福的话",
+        "defaultValue": "这是一句美好的祝福"
+      }
+    ]
+  }
+}

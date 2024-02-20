@@ -4,7 +4,7 @@ spring:
     name: springboot-init
   # 默认 dev 环境
   profiles:
-    active: dev
+    active: local
   # 支持 swagger3
   mvc:
     pathmatch:
@@ -44,6 +44,9 @@ spring:
       # 大小限制
       max-file-size: 100MB
       max-request-size: 100MB
+
+imgbb:
+ api: xxx
 
 server:
   address: 0.0.0.0

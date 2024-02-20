@@ -7,6 +7,8 @@ import lombok.Data;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
+import cn.hutool.core.io.FileUtil;
+import java.io.File;
 
 import java.util.concurrent.Callable;
 
@@ -77,6 +79,23 @@ public class GenerateCommand implements Callable<Integer> {
         </#if>
         </#list>
         MainGenerator.doGenerate(dataModel);
+
+        <#list modelConfig.models as modelInfo>
+        <#if modelInfo.fieldName??>
+        <#if modelInfo.fieldName=='basePackage'>
+            if (!basePackage.equals("com.point")) {
+                String[] split = basePackage.split("\\.");
+                StringBuilder destPath = new StringBuilder();
+                for (String partPath : split) {
+                    destPath.append(partPath);
+                    destPath.append("/");
+                }
+                FileUtil.copyContent(new File("generated/src/main/java/com/point/"), new File("generated/src/main/java/" + destPath), true);
+                FileUtil.del("generated/src/main/java/com/point");
+            }
+        </#if>
+        </#if>
+        </#list>
         return 0;
     }
 }

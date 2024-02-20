@@ -4,6 +4,7 @@
 // API 唯一标识：
 import * as fileController from './fileController';
 import * as generatorController from './generatorController';
+import * as imgController from './imgController';
 import * as postController from './postController';
 import * as postFavourController from './postFavourController';
 import * as postThumbController from './postThumbController';
@@ -13,6 +14,7 @@ export default {
   wxMpController,
   fileController,
   generatorController,
+  imgController,
   postController,
   postFavourController,
   postThumbController,
