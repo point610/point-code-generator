@@ -1,0 +1,259 @@
+{
+  "name": "Birthday",
+  "description": "生成生日祝福的前端页面",
+  "fileConfig": {
+    "sourceRootPath": "E:/Java_Projection/point-code-generator/demo-project/Birthday-Template-dist",
+    "files": [
+      {
+        "inputPath": "music/1.mp3",
+        "outputPath": "music/1.mp3",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "music/2.mp3",
+        "outputPath": "music/2.mp3",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "index.html",
+        "outputPath": "index.html",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "css/styles.css",
+        "outputPath": "css/styles.css",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "css/style.css",
+        "outputPath": "css/style.css",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "css/normalizel.css",
+        "outputPath": "css/normalizel.css",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "css/jquery.fullPage.css",
+        "outputPath": "css/jquery.fullPage.css",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "css/normalize.css",
+        "outputPath": "css/normalize.css",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "css/styless.css",
+        "outputPath": "css/styless.css",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "css/stylel.css",
+        "outputPath": "css/stylel.css",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "js/diy.js",
+        "outputPath": "js/diy.js",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "js/jquery-2.1.1.min.js",
+        "outputPath": "js/jquery-2.1.1.min.js",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "js/jquery-1.8.3.min.js",
+        "outputPath": "js/jquery-1.8.3.min.js",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "js/jquery.fullPage.min.js",
+        "outputPath": "js/jquery.fullPage.min.js",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "js/jquery-1.8.4.min.js.ftl",
+        "outputPath": "js/jquery-1.8.4.min.js",
+        "type": "file",
+        "generateType": "dynamic"
+      },
+      {
+        "inputPath": "js/indexl.js.ftl",
+        "outputPath": "js/indexl.js",
+        "type": "file",
+        "generateType": "dynamic"
+      },
+      {
+        "inputPath": "js/jquery.fullPage.js",
+        "outputPath": "js/jquery.fullPage.js",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "js/jquery.js",
+        "outputPath": "js/jquery.js",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "html/login.html.ftl",
+        "outputPath": "html/login.html",
+        "type": "file",
+        "generateType": "dynamic"
+      },
+      {
+        "inputPath": "html/Memories.html",
+        "outputPath": "html/Memories.html",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "html/BirthdayCake.html",
+        "outputPath": "html/BirthdayCake.html",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "html/index1.html",
+        "outputPath": "html/index1.html",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "html/EasterEgg.html.ftl",
+        "outputPath": "html/EasterEgg.html",
+        "type": "file",
+        "generateType": "dynamic"
+      },
+      {
+        "inputPath": "img/di42.jpeg",
+        "outputPath": "img/di42.jpeg",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "img/haha.jpg",
+        "outputPath": "img/haha.jpg",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "img/timg.jpg",
+        "outputPath": "img/timg.jpg",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "img/HappyBirthday.png",
+        "outputPath": "img/HappyBirthday.png",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "img/di2.png",
+        "outputPath": "img/di2.png",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "img/di222.jpg",
+        "outputPath": "img/di222.jpg",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "img/di24.gif",
+        "outputPath": "img/di24.gif",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "img/di54.png",
+        "outputPath": "img/di54.png",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "img/timg.gif",
+        "outputPath": "img/timg.gif",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "img/di21.jpg",
+        "outputPath": "img/di21.jpg",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "img/di22.jpg",
+        "outputPath": "img/di22.jpg",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "img/di23.jpg",
+        "outputPath": "img/di23.jpg",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "img/zt.png",
+        "outputPath": "img/zt.png",
+        "type": "file",
+        "generateType": "static"
+      },
+      {
+        "inputPath": "img/di24.jpg",
+        "outputPath": "img/di24.jpg",
+        "type": "file",
+        "generateType": "static"
+      }
+    ]
+  },
+  "modelConfig": {
+    "models": [
+      {
+        "fieldName": "name",
+        "type": "String",
+        "description": "名字",
+        "defaultValue": "point"
+      },
+      {
+        "fieldName": "wisher",
+        "type": "String",
+        "description": "祝福者",
+        "defaultValue": "祝福者的名字"
+      },
+      {
+        "fieldName": "wishWord",
+        "type": "String",
+        "description": "祝福语",
+        "defaultValue": "自定义祝福语"
+      },
+      {
+        "fieldName": "birthday",
+        "type": "String",
+        "description": "生日（4 位）",
+        "defaultValue": "0412"
+      }
+    ]
+  }
+}

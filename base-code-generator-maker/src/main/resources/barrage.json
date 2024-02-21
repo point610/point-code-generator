@@ -1,0 +1,25 @@
+{
+  "name": "Barrage",
+  "description": "生成无聊弹幕的前端页面",
+  "fileConfig": {
+    "sourceRootPath": "E:/Java_Projection/point-code-generator/demo-project/Barrage",
+    "files": [
+      {
+        "inputPath": "index.html.ftl",
+        "outputPath": "index.html",
+        "type": "file",
+        "generateType": "dynamic"
+      }
+    ]
+  },
+  "modelConfig": {
+    "models": [
+      {
+        "fieldName": "mywords",
+        "type": "String",
+        "description": "我的弹幕",
+        "defaultValue": "这里是我的弹幕"
+      }
+    ]
+  }
+}

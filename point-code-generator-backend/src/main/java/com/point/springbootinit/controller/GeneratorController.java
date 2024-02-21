@@ -281,6 +281,10 @@ public class GeneratorController {
             throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
         }
         boolean result = generatorService.updateById(generator);
+
+        // 删除缓存
+        cacheManager.deleteAll();
+
         return ResultUtils.success(result);
     }
 
