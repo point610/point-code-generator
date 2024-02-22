@@ -46,6 +46,17 @@ public class MetaValidator {
                 continue;
             }
 
+            // 手动转化String和boolean的转化问题
+            String type = modelInfo.getType();
+            if (type.equals("Boolean") || type.equals("boolean")){
+                String defaultValue = (String) modelInfo.getDefaultValue();
+                if (defaultValue.equals("true")) {
+                    modelInfo.setDefaultValue(true);
+                } else if (defaultValue.equals("false")) {
+                    modelInfo.setDefaultValue(false);
+                }
+            }
+
             // 输出路径默认值
             String fieldName = modelInfo.getFieldName();
             if (StrUtil.isBlank(fieldName)) {
