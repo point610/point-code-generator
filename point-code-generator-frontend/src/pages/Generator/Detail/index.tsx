@@ -18,13 +18,12 @@ import React, {useEffect, useState} from 'react';
  * @constructor
  */
 const GeneratorDetailPage: React.FC = () => {
-  const {id} = useParams();
 
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<API.GeneratorVO>({});
   const {initialState} = useModel('@@initialState');
   const {currentUser} = initialState ?? {};
-  const my = currentUser?.id === data?.userId;
+  const id = currentUser?.id === data?.userId;
 
   /**
    * 加载数据

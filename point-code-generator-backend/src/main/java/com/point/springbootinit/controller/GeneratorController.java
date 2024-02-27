@@ -418,9 +418,11 @@ public class GeneratorController {
         // 执行脚本
         // 找到脚本文件所在路径
         // 要注意，如果不是 windows 系统，找 generator 文件而不是 bat
+        // windows环境
         //File scriptFile = FileUtil.loopFiles(unzipDistDir, 2, null).stream()
         //        .filter(file -> file.isFile() && "generator.bat".equals(file.getName()))
         //        .findFirst().orElseThrow(RuntimeException::new);
+        // Linux环境
         File scriptFile = FileUtil.loopFiles(unzipDistDir, 2, null).stream()
                 .filter(file -> file.isFile() && "generator".equals(file.getName()))
                 .findFirst().orElseThrow(RuntimeException::new);
@@ -436,10 +438,12 @@ public class GeneratorController {
         // 构造命令
         File scriptDir = scriptFile.getParentFile();
         // 注意，如果是 mac / linux 系统，要用 "./generator"
+        // windows环境
         //String scriptAbsolutePath = scriptFile.getAbsolutePath().replace("\\", "/");
         //String[] commands = new String[]{scriptAbsolutePath, "json-generate", "--file=" + dataModelFilePath};
 
         // 注意，如果是 mac / linux 系统，要用 "./generator"
+        // Linux环境
         String scriptAbsolutePath = scriptFile.getAbsolutePath();
         String[] commands = new String[]{scriptAbsolutePath, "json-generate", "--file=" + dataModelFilePath};
 
@@ -670,5 +674,29 @@ public class GeneratorController {
         cacheManager.put(cacheKey, generatorVOPage);
         return ResultUtils.success(generatorVOPage);
     }
+
+    ///**
+    // * 快速分页获取列表（封装类）
+    // *
+    // * @param generatorQueryRequest
+    // * @param request
+    // * @return
+    // */
+    //@PostMapping("/list/page/vo/fast")
+    ////    /api/generator/list/page/vo/fast
+    ////  {"current":1,"pageSize":12,"sortField":"createTime","sortOrder":"descend"}
+    ////   \"code\":0
+    //public BaseResponse<Page<GeneratorVO>> listGeneratorVOByPageFast(@RequestBody GeneratorQueryRequest generatorQueryRequest, HttpServletRequest request) {
+    //    long current = generatorQueryRequest.getCurrent();
+    //    long size = generatorQueryRequest.getPageSize();
+    //
+    //    // 限制爬虫
+    //    ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
+    //    QueryWrapper<Generator> queryWrapper = generatorService.getQueryWrapper(generatorQueryRequest);
+    //    queryWrapper.select("id", "name", "description", "tags", "picture", "status", "userId", "createTime", "updateTime");
+    //    Page<Generator> generatorPage = generatorService.page(new Page<>(current, size), queryWrapper);
+    //    Page<GeneratorVO> generatorVOPage = generatorService.getGeneratorVOPage(generatorPage, request);
+    //    return ResultUtils.success(generatorVOPage);
+    //}
 
 }

@@ -158,6 +158,7 @@ const GeneratorAdminPage: React.FC = () => {
     },
     {
       title: '操作',
+      fixed: 'right', width: 100,
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => (
@@ -184,6 +185,7 @@ const GeneratorAdminPage: React.FC = () => {
         生成器管理
       </Typography.Title>
       <ProTable<API.Generator>
+        scroll={{ x: 'max-content' }}
         headerTitle={'查询表格'}
         actionRef={actionRef}
         rowKey="key"
