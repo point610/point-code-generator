@@ -64,8 +64,8 @@ const UserRegisterPage: React.FC = () => {
             maxWidth: '75vw',
           }}
           logo={<img alt="logo" style={{ height: '100%' }} src="/logo.png" />}
-          title="鱼籽代码生成"
-          subTitle={'代码生成器在线制作共享，大幅提升开发效率'}
+          title="point-code-generator"
+          subTitle={'point-code-generator，代码生成器平台'}
           initialValues={{
             autoLogin: true,
           }}
@@ -85,7 +85,7 @@ const UserRegisterPage: React.FC = () => {
             items={[
               {
                 key: 'account',
-                label: '新用户注册',
+                label: '用户注册',
               },
             ]}
           />
@@ -142,7 +142,7 @@ const UserRegisterPage: React.FC = () => {
               textAlign: 'right',
             }}
           >
-            <Link to="/user/login">老用户登录</Link>
+            <Link to="/user/login">用户登录</Link>
           </div>
         </LoginForm>
       </div>

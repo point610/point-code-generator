@@ -67,7 +67,7 @@ const Login: React.FC = () => {
           }}
           logo={<img alt="logo" style={{ height: '100%' }} src="/logo.png" />}
           title="point-code-generator"
-          subTitle={'point-code-generator'}
+          subTitle={'point-code-generator，代码生成器平台'}
           initialValues={{
             autoLogin: true,
           }}
@@ -125,7 +125,7 @@ const Login: React.FC = () => {
               textAlign: 'right',
             }}
           >
-            <Link to="/user/register">新用户注册</Link>
+            <Link to="/user/register">用户注册</Link>
           </div>
         </LoginForm>
       </div>
