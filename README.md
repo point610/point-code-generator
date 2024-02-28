@@ -27,7 +27,7 @@
 
 ## 项目导航 🧭
 
-- **[Point-Code-Generator 前端，web模块，网关模块，接口模块](https://github.com/point610/point-api)**
+- **[Point-Code-Generator 前端，web模块，网关模块，接口模块](https://github.com/point610/point-code-generator)**
 - **[Point-Code-Generator 在线平台](http://43.139.205.77/)**
 
 ## 目录结构 📑
@@ -37,7 +37,7 @@
 | **[point-code-generator-backend](https://github.com/point610/point-code-generator/tree/master/point-code-generator-backend)**   | 后端模块                            |
 | **[point-code-generator-frontend](https://github.com/point610/point-code-generator/tree/master/point-code-generator-frontend)** | 前端模块                            |
 | **[base-code-generator-maker](https://github.com/point610/point-code-generator/tree/master/base-code-generator-maker)**         | maker生成器制作工具<br/>template模板制作工具 |
-| **[base-code-generator](https://github.com/point610/point-api/tree/master/point-api-interface)**                                | basic本地代码生成器                    |
+| **[base-code-generator](https://github.com/point610/point-code-generator/tree/master/base-code-generator)**                                | basic本地代码生成器                    |
 | **[demo-project](https://github.com/point610/point-code-generator/tree/master/demo-project)**                                   | demo模块                          |
 
 ## 项目架构 🗺️
