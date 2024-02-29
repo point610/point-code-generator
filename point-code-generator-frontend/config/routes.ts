@@ -23,6 +23,12 @@ export default [
     hideInMenu: true,
   },
   {
+    path: '/account/center',
+    icon: 'home',
+    component: './User/Detail',
+    name: '个人中心',
+  },
+  {
     path: '/generator/use/:id',
     icon: 'home',
     component: './Generator/Use',

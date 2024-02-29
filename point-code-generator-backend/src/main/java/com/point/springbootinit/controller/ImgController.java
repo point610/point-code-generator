@@ -38,8 +38,6 @@ public class ImgController {
     @Resource
     private ImgBBClientConfig imgBBClientConfig;
 
-
-
     /**
      * 文件上传
      *
