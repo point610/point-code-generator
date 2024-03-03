@@ -1,9 +1,16 @@
 package com.point.maker.generator.main;
 
+import cn.hutool.core.io.FileUtil;
+import com.point.maker.meta.Meta;
+import freemarker.template.TemplateException;
+
+import java.io.IOException;
+
 /**
  * 生成代码生成器压缩包
  */
 public class ZipGenerator extends GenerateTemplate {
+
 
     @Override
     protected String buildDist(String outputPath, String sourceCopyDestPath, String jarPath, String shellOutputFilePath) {

@@ -151,6 +151,7 @@ public class MetaValidator {
         String basePackage = StrUtil.blankToDefault(meta.getBasePackage(), "com.point");
         String version = StrUtil.emptyToDefault(meta.getVersion(), "1.0");
         String createTime = StrUtil.emptyToDefault(meta.getCreateTime(), DateUtil.now());
+
         meta.setName(name);
         meta.setDescription(description);
         meta.setAuthor(author);

@@ -117,52 +117,6 @@ INSERT INTO code_generator_db.generator (id, name, description, basePackage, ver
 VALUES (5, 'point商城', 'point商城项目生成器', 'com.point', '1.0', 'point', '["Java", "前端"]',
         'https://pic.yupi.icu/1/_r1_c0709-8e80689ac1da.jpg', '{}', '{}', null, 0, 1);
 
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,fileConfig,modelConfig,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-
-
-
-
-
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-SELECT id,name,description,basePackage,version,author,tags,picture,distPath,status,userId,createTime,updateTime,isDelete FROM generator WHERE isDelete=0 ORDER BY createTime DESC LIMIT 12;
-
 use code_generator_db;
 
 delete from generator where id>6;
