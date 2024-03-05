@@ -1,0 +1,32 @@
+{
+  "models": [
+    {
+      "fieldName": "needGit",
+      "type": "boolean",
+      "description": "是否生成.gitignore文件",
+      "defaultValue": "true",
+      "abbr": "g"
+    },
+    {
+      "fieldName": "loop",
+      "type": "boolean",
+      "description": "是否生成循环",
+      "defaultValue": "true",
+      "abbr": "l"
+    },
+    {
+      "fieldName": "author",
+      "type": "String",
+      "description": "作者注释",
+      "defaultValue": "point",
+      "abbr": "a"
+    },
+    {
+      "fieldName": "printList",
+      "type": "boolean",
+      "description": "是否输出数组信息",
+      "defaultValue": "true",
+      "abbr": "pl"
+    }
+  ]
+}

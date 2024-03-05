@@ -90,32 +90,32 @@ create table if not exists generator
 -- 模拟用户数据
 INSERT INTO code_generator_db.user (id, userAccount, userPassword, userName, userAvatar, userProfile, userRole)
 VALUES (1, 'point', 'b0dd3697a192885d7c055db46155b26a', 'point_master',
-        'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png', '我有一头小毛驴我从来也不骑', 'admin');
+        'https://i.ibb.co/dDP9Fn2/user-avatar-1752189699880771586-Ng3fy-ANH-OIP-2-jpg8111768285787531669.jpg', '啦啦啦', 'admin');
 INSERT INTO code_generator_db.user (id, userAccount, userPassword, userName, userAvatar, userProfile, userRole)
 VALUES (2, 'point_2', 'b0dd3697a192885d7c055db46155b26a', 'point_working',
-        'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png', '我有一头小毛驴我从来也不骑', 'user');
+        'https://i.ibb.co/dDP9Fn2/user-avatar-1752189699880771586-Ng3fy-ANH-OIP-2-jpg8111768285787531669.jpg', '啦啦啦', 'user');
 
 -- 模拟代码生成器数据
 INSERT INTO code_generator_db.generator (id, name, description, basePackage, version, author, tags, picture, fileConfig,
                                          modelConfig, distPath, status, userId)
 VALUES (1, 'ACM 模板项目', 'ACM 模板项目生成器', 'com.point', '1.0', 'point', '["Java"]',
-        'https://pic.yupi.icu/1/_r0_c1851-bf115939332e.jpg', '{}', '{}', null, 0, 1);
+        'https://i.ibb.co/dDP9Fn2/user-avatar-1752189699880771586-Ng3fy-ANH-OIP-2-jpg8111768285787531669.jpg', '{}', '{}', null, 0, 1);
 INSERT INTO code_generator_db.generator (id, name, description, basePackage, version, author, tags, picture, fileConfig,
                                          modelConfig, distPath, status, userId)
 VALUES (2, 'Spring Boot 初始化模板', 'Spring Boot 初始化模板项目生成器', 'com.point', '1.0', 'point', '["Java"]',
-        'https://pic.yupi.icu/1/_r0_c0726-7e30f8db802a.jpg', '{}', '{}', null, 0, 1);
+        'https://i.ibb.co/dDP9Fn2/user-avatar-1752189699880771586-Ng3fy-ANH-OIP-2-jpg8111768285787531669.jpg', '{}', '{}', null, 0, 1);
 INSERT INTO code_generator_db.generator (id, name, description, basePackage, version, author, tags, picture, fileConfig,
                                          modelConfig, distPath, status, userId)
 VALUES (3, 'point外卖', 'point外卖项目生成器', 'com.point', '1.0', 'point', '["Java", "前端"]',
-        'https://pic.yupi.icu/1/_r1_c0cf7-f8e4bd865b4b.jpg', '{}', '{}', null, 0, 1);
+        'https://i.ibb.co/dDP9Fn2/user-avatar-1752189699880771586-Ng3fy-ANH-OIP-2-jpg8111768285787531669.jpg', '{}', '{}', null, 0, 1);
 INSERT INTO code_generator_db.generator (id, name, description, basePackage, version, author, tags, picture, fileConfig,
                                          modelConfig, distPath, status, userId)
 VALUES (4, 'point用户中心', 'point用户中心项目生成器', 'com.point', '1.0', 'point', '["Java", "前端"]',
-        'https://pic.yupi.icu/1/_r1_c1c15-79cdecf24aed.jpg', '{}', '{}', null, 0, 1);
+        'https://i.ibb.co/dDP9Fn2/user-avatar-1752189699880771586-Ng3fy-ANH-OIP-2-jpg8111768285787531669.jpg', '{}', '{}', null, 0, 1);
 INSERT INTO code_generator_db.generator (id, name, description, basePackage, version, author, tags, picture, fileConfig,
                                          modelConfig, distPath, status, userId)
 VALUES (5, 'point商城', 'point商城项目生成器', 'com.point', '1.0', 'point', '["Java", "前端"]',
-        'https://pic.yupi.icu/1/_r1_c0709-8e80689ac1da.jpg', '{}', '{}', null, 0, 1);
+        'https://i.ibb.co/dDP9Fn2/user-avatar-1752189699880771586-Ng3fy-ANH-OIP-2-jpg8111768285787531669.jpg', '{}', '{}', null, 0, 1);
 
 use code_generator_db;
 
